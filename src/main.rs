@@ -35,11 +35,23 @@ enum Command {
     },
 }
 
+/// Stored format — `date` is set from the request URL, not the API `print_date` field.
 #[derive(Deserialize, Serialize, Clone)]
 struct Puzzle {
+    #[serde(default)]
+    date: String,
     id: u32,
-    print_date: String,
-    editor: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    editor: Option<String>,
+    categories: Vec<Category>,
+}
+
+/// Raw API response shape — `print_date` verified to always equal the request date.
+#[derive(Deserialize)]
+struct ApiPuzzle {
+    id: u32,
+    #[serde(default)]
+    editor: Option<String>,
     categories: Vec<Category>,
 }
 
@@ -91,7 +103,13 @@ fn fetch_puzzle(date: &str) -> Result<Puzzle, String> {
     if !resp.status().is_success() {
         return Err(format!("HTTP {}", resp.status()));
     }
-    resp.json::<Puzzle>().map_err(|e| e.to_string())
+    let raw = resp.json::<ApiPuzzle>().map_err(|e| e.to_string())?;
+    Ok(Puzzle {
+        date: date.to_string(),
+        id: raw.id,
+        editor: raw.editor,
+        categories: raw.categories,
+    })
 }
 
 fn main() {
@@ -112,7 +130,7 @@ fn main() {
                 .collect();
             all_cards.sort_by_key(|(_, pos)| *pos);
 
-            println!("NYT Connections #{} — {}", puzzle.id, puzzle.print_date);
+            println!("NYT Connections #{} — {}", puzzle.id, puzzle.date);
             for (word, pos) in &all_cards {
                 println!("{:>2}. {}", pos, word);
             }
@@ -146,7 +164,7 @@ fn main() {
                 vec![]
             };
 
-            let cached: HashSet<String> = archive.iter().map(|p| p.print_date.clone()).collect();
+            let cached: HashSet<String> = archive.iter().map(|p| p.date.clone()).collect();
             eprintln!("Cached: {} puzzles", cached.len());
 
             let today = Local::now().date_naive();
@@ -165,7 +183,7 @@ fn main() {
 
                 match fetch_puzzle(&date_str) {
                     Ok(puzzle) => {
-                        eprintln!("Fetched #{} — {}", puzzle.id, date_str);
+                        eprintln!("Fetched #{} — {}", puzzle.id, puzzle.date);
                         archive.push(puzzle);
                         fetched += 1;
                     }
@@ -179,8 +197,7 @@ fn main() {
                 std::thread::sleep(std::time::Duration::from_millis(200));
             }
 
-            // Sort archive by date descending
-            archive.sort_by(|a, b| b.print_date.cmp(&a.print_date));
+            archive.sort_by(|a, b| b.date.cmp(&a.date));
 
             let json = serde_json::to_string_pretty(&archive).unwrap();
             fs::write(&output, json).unwrap_or_else(|e| {
