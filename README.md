@@ -1,6 +1,6 @@
 # connections
 
-Research platform for studying and solving the [NYT Connections](https://www.nytimes.com/games/connections) word game with language models. The immediate goal is a complete puzzle archive and tooling for reproducible evaluation; the longer-term goal is fine-tuned models — ideally small, local ones — that can solve puzzles reliably, benchmarked against the full NYT archive and community puzzles from [connectionsplus.io](https://connectionsplus.io). See [TODO.md](TODO.md) for the full roadmap covering agent harness, evaluation framework, TUI/web UI, daily solver service, and fine-tuning pipeline.
+Research platform for studying and solving the [NYT Connections](https://www.nytimes.com/games/connections) word game with language models. The immediate goal is a complete puzzle archive and tooling for reproducible evaluation; the longer-term goal is fine-tuned models — ideally small, local ones — that can solve puzzles reliably, benchmarked against the full NYT archive and community puzzles from [connectionsplus.io](https://connectionsplus.io). See [TODO.md](TODO.md) for the full roadmap covering agent harness, evaluation framework, TUI/web UI, daily solver service, and fine-tuning pipeline. See [PAPERS.md](PAPERS.md) for an overview of prior work.
 
 ## Build
 

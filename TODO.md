@@ -115,5 +115,4 @@ Single Axum app, Maud templates, HTMX — no JS framework.
 
 ## Reference
 
-- Paper: *Can LLMs Play the Connections Word Game?* — Mariam et al., 2024 ([arXiv:2406.11012](https://arxiv.org/abs/2406.11012))
-- Baseline repo: [mustafamariam/llm-connections-solver](https://github.com/mustafamariam/llm-connections-solver) — 442 annotated games, expert/novice human baselines, `game_with_knowledge_taxonomy.json`
+See [PAPERS.md](PAPERS.md) for full citations and descriptions of prior work, including Mariam et al. (2024), Loredo Lopez et al. (COLING 2025), Todd et al. (2024), Merino et al. (2024), and the lechmazur extended benchmark.
