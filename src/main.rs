@@ -51,8 +51,21 @@ struct Category {
 
 #[derive(Deserialize, Serialize, Clone)]
 struct Card {
-    content: String,
+    /// Text puzzles use `content`; image puzzles use `image_alt_text` instead.
+    #[serde(default)]
+    content: Option<String>,
+    #[serde(default)]
+    image_alt_text: Option<String>,
     position: u8,
+}
+
+impl Card {
+    fn label(&self) -> &str {
+        self.content
+            .as_deref()
+            .or(self.image_alt_text.as_deref())
+            .unwrap_or("?")
+    }
 }
 
 const API: &str = "https://www.nytimes.com/svc/connections/v2";
@@ -93,7 +106,7 @@ fn main() {
             let mut all_cards: Vec<(&str, u8)> = puzzle
                 .categories
                 .iter()
-                .flat_map(|c| c.cards.iter().map(|card| (card.content.as_str(), card.position)))
+                .flat_map(|c| c.cards.iter().map(|card| (card.label(), card.position)))
                 .collect();
             all_cards.sort_by_key(|(_, pos)| *pos);
 
