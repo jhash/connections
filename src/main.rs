@@ -55,6 +55,8 @@ struct Card {
     #[serde(default)]
     content: Option<String>,
     #[serde(default)]
+    image_url: Option<String>,
+    #[serde(default)]
     image_alt_text: Option<String>,
     position: u8,
 }
