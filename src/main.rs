@@ -112,101 +112,101 @@ fn fetch_puzzle(date: &str) -> Result<Puzzle, String> {
     })
 }
 
+fn cmd_words(date: Option<String>) {
+    let date = resolve_date(date.as_deref());
+    let puzzle = fetch_puzzle(&date).unwrap_or_else(|e| {
+        eprintln!("Error: {e}");
+        std::process::exit(1);
+    });
+
+    let mut cards: Vec<(&str, u8)> = puzzle
+        .categories
+        .iter()
+        .flat_map(|c| c.cards.iter().map(|card| (card.label(), card.position)))
+        .collect();
+    cards.sort_by_key(|(_, pos)| *pos);
+
+    println!("NYT Connections #{} — {}", puzzle.id, puzzle.date);
+    for (word, pos) in &cards {
+        println!("{:>2}. {word}", pos);
+    }
+}
+
+fn cmd_json(date: Option<String>) {
+    let date = resolve_date(date.as_deref());
+    let url = format!("{API}/{date}.json");
+    let resp = reqwest::blocking::get(&url).unwrap_or_else(|e| {
+        eprintln!("Request failed: {e}");
+        std::process::exit(1);
+    });
+    if !resp.status().is_success() {
+        eprintln!("HTTP {}: no puzzle for {date}", resp.status());
+        std::process::exit(1);
+    }
+    println!("{}", resp.text().unwrap());
+}
+
+fn cmd_archive(output: PathBuf, since: String) {
+    let since_date = NaiveDate::parse_from_str(&since, "%Y-%m-%d").unwrap_or_else(|_| {
+        eprintln!("Invalid --since date: {since}");
+        std::process::exit(1);
+    });
+
+    let mut archive: Vec<Puzzle> = if output.exists() {
+        let text = fs::read_to_string(&output).unwrap_or_default();
+        serde_json::from_str(&text).unwrap_or_default()
+    } else {
+        vec![]
+    };
+
+    let cached: HashSet<String> = archive.iter().map(|p| p.date.clone()).collect();
+    eprintln!("Cached: {} puzzles", cached.len());
+
+    let mut current = Local::now().date_naive();
+    let mut fetched = 0;
+    let mut skipped = 0;
+
+    while current >= since_date {
+        let date_str = current.format("%Y-%m-%d").to_string();
+        current -= Duration::days(1);
+
+        if cached.contains(&date_str) {
+            skipped += 1;
+            continue;
+        }
+
+        match fetch_puzzle(&date_str) {
+            Ok(puzzle) => {
+                eprintln!("Fetched #{} — {}", puzzle.id, puzzle.date);
+                archive.push(puzzle);
+                fetched += 1;
+            }
+            Err(e) => eprintln!("Skip {date_str}: {e}"),
+        }
+
+        std::thread::sleep(std::time::Duration::from_millis(200));
+    }
+
+    archive.sort_by(|a, b| b.date.cmp(&a.date));
+
+    let json = serde_json::to_string_pretty(&archive).unwrap();
+    fs::write(&output, json).unwrap_or_else(|e| {
+        eprintln!("Write failed: {e}");
+        std::process::exit(1);
+    });
+
+    eprintln!(
+        "Done. Fetched {fetched} new, skipped {skipped} cached. Total: {} puzzles → {}",
+        archive.len(),
+        output.display()
+    );
+}
+
 fn main() {
-    let cli = Cli::parse();
-
-    match cli.command {
-        Command::Words { date } => {
-            let date = resolve_date(date.as_deref());
-            let puzzle = fetch_puzzle(&date).unwrap_or_else(|e| {
-                eprintln!("Error: {e}");
-                std::process::exit(1);
-            });
-
-            let mut all_cards: Vec<(&str, u8)> = puzzle
-                .categories
-                .iter()
-                .flat_map(|c| c.cards.iter().map(|card| (card.label(), card.position)))
-                .collect();
-            all_cards.sort_by_key(|(_, pos)| *pos);
-
-            println!("NYT Connections #{} — {}", puzzle.id, puzzle.date);
-            for (word, pos) in &all_cards {
-                println!("{:>2}. {}", pos, word);
-            }
-        }
-
-        Command::Json { date } => {
-            let date = resolve_date(date.as_deref());
-            let url = format!("{API}/{date}.json");
-            let resp = reqwest::blocking::get(&url).unwrap_or_else(|e| {
-                eprintln!("Request failed: {e}");
-                std::process::exit(1);
-            });
-            if !resp.status().is_success() {
-                eprintln!("HTTP {}: no puzzle for {date}", resp.status());
-                std::process::exit(1);
-            }
-            println!("{}", resp.text().unwrap());
-        }
-
-        Command::Archive { output, since } => {
-            let since_date = NaiveDate::parse_from_str(&since, "%Y-%m-%d").unwrap_or_else(|_| {
-                eprintln!("Invalid --since date: {since}");
-                std::process::exit(1);
-            });
-
-            // Load existing archive, build set of already-fetched dates
-            let mut archive: Vec<Puzzle> = if output.exists() {
-                let text = fs::read_to_string(&output).unwrap_or_default();
-                serde_json::from_str(&text).unwrap_or_default()
-            } else {
-                vec![]
-            };
-
-            let cached: HashSet<String> = archive.iter().map(|p| p.date.clone()).collect();
-            eprintln!("Cached: {} puzzles", cached.len());
-
-            let today = Local::now().date_naive();
-            let mut current = today;
-            let mut fetched = 0;
-            let mut skipped = 0;
-
-            while current >= since_date {
-                let date_str = current.format("%Y-%m-%d").to_string();
-
-                if cached.contains(&date_str) {
-                    skipped += 1;
-                    current -= Duration::days(1);
-                    continue;
-                }
-
-                match fetch_puzzle(&date_str) {
-                    Ok(puzzle) => {
-                        eprintln!("Fetched #{} — {}", puzzle.id, puzzle.date);
-                        archive.push(puzzle);
-                        fetched += 1;
-                    }
-                    Err(e) => {
-                        eprintln!("Skip {date_str}: {e}");
-                    }
-                }
-
-                current -= Duration::days(1);
-                // Polite delay to avoid hammering the API
-                std::thread::sleep(std::time::Duration::from_millis(200));
-            }
-
-            archive.sort_by(|a, b| b.date.cmp(&a.date));
-
-            let json = serde_json::to_string_pretty(&archive).unwrap();
-            fs::write(&output, json).unwrap_or_else(|e| {
-                eprintln!("Write failed: {e}");
-                std::process::exit(1);
-            });
-
-            eprintln!("Done. Fetched {fetched} new, skipped {skipped} cached. Total: {} puzzles → {}", archive.len(), output.display());
-        }
+    match Cli::parse().command {
+        Command::Words { date } => cmd_words(date),
+        Command::Json { date } => cmd_json(date),
+        Command::Archive { output, since } => cmd_archive(output, since),
     }
 }
 
