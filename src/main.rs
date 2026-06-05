@@ -33,6 +33,14 @@ enum Command {
         #[arg(short, long, default_value = "2023-06-12")]
         since: String,
     },
+    /// Fetch all community puzzles by a username from connectionsplus.io
+    UserArchive {
+        /// Username to archive (output saved to <username>.json)
+        username: String,
+        /// Output directory (default: current directory)
+        #[arg(short, long, default_value = ".")]
+        dir: PathBuf,
+    },
 }
 
 /// Stored format — `date` is set from the request URL, not the API `print_date` field.
@@ -83,6 +91,45 @@ impl Card {
 }
 
 const API: &str = "https://www.nytimes.com/svc/connections/v2";
+const COMMUNITY_API: &str =
+    "https://qybg0x3528.execute-api.us-east-2.amazonaws.com/default/getCommunityGamesV2";
+
+/// Community puzzle from connectionsplus.io list API.
+///
+/// `categories` is None until we can decrypt game data (connectionsplus.io encrypts puzzle
+/// content client-side). Once decryption is solved, populate it to match the NYT format:
+///
+///   "categories": [
+///     {
+///       "title": "ASSOCIATED WITH HANSEL AND GRETEL",
+///       "cards": [
+///         { "content": "WITCH", "position": 0 },
+///         ...
+///       ]
+///     },
+///     ...
+///   ]
+///
+/// That will let community games be processed by the same `words`/`json` paths as NYT puzzles.
+#[derive(Deserialize, Serialize, Clone)]
+struct CommunityGame {
+    name: String,
+    #[serde(rename = "createdBy")]
+    created_by: String,
+    id: String,
+    #[serde(rename = "createdAt")]
+    created_at: String,
+    #[serde(rename = "attemptedPlays")]
+    attempted_plays: u32,
+    /// Populated once decryption is implemented; None in the meantime.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    categories: Option<Vec<Category>>,
+}
+
+#[derive(Deserialize)]
+struct CommunityGamesResponse {
+    games: Vec<CommunityGame>,
+}
 
 fn resolve_date(input: Option<&str>) -> String {
     match input.unwrap_or("today") {
@@ -202,11 +249,78 @@ fn cmd_archive(output: PathBuf, since: String) {
     );
 }
 
+/// Placeholder: fetch and decrypt puzzle content for a community game.
+/// connectionsplus.io encrypts categories client-side (PBKDF2 + AES-CBC).
+/// Once the key derivation is reversed, this should return a Vec<Category>
+/// in the same format as NYT puzzles so existing display/archive logic can be reused.
+#[allow(unused_variables)]
+fn fetch_community_categories(_game_id: &str) -> Option<Vec<Category>> {
+    // TODO: implement decryption
+    None
+}
+
+fn cmd_user_archive(username: String, dir: PathBuf) {
+    let output = dir.join(format!("{username}.json"));
+
+    let mut archive: Vec<CommunityGame> = if output.exists() {
+        let text = fs::read_to_string(&output).unwrap_or_default();
+        serde_json::from_str(&text).unwrap_or_default()
+    } else {
+        vec![]
+    };
+
+    let cached: HashSet<String> = archive.iter().map(|g| g.id.clone()).collect();
+    eprintln!("Cached: {} games", cached.len());
+
+    let url = format!("{COMMUNITY_API}?page=1&pageSize=100000&sort=popular&q={username}");
+    let resp = reqwest::blocking::get(&url).unwrap_or_else(|e| {
+        eprintln!("Request failed: {e}");
+        std::process::exit(1);
+    });
+    if !resp.status().is_success() {
+        eprintln!("HTTP {}: fetch failed for user {username}", resp.status());
+        std::process::exit(1);
+    }
+    let body: CommunityGamesResponse = resp.json().unwrap_or_else(|e| {
+        eprintln!("Parse error: {e}");
+        std::process::exit(1);
+    });
+
+    let mut fetched = 0;
+    let mut skipped = 0;
+
+    for mut game in body.games.into_iter().filter(|g| g.created_by == username) {
+        if cached.contains(&game.id) {
+            skipped += 1;
+            continue;
+        }
+        game.categories = fetch_community_categories(&game.id);
+        eprintln!("Fetched \"{}\" ({})", game.name, game.id);
+        archive.push(game);
+        fetched += 1;
+    }
+
+    archive.sort_by(|a, b| b.created_at.cmp(&a.created_at));
+
+    let json = serde_json::to_string_pretty(&archive).unwrap();
+    fs::write(&output, json).unwrap_or_else(|e| {
+        eprintln!("Write failed: {e}");
+        std::process::exit(1);
+    });
+
+    eprintln!(
+        "Done. Fetched {fetched} new, skipped {skipped} cached. Total: {} games → {}",
+        archive.len(),
+        output.display()
+    );
+}
+
 fn main() {
     match Cli::parse().command {
         Command::Words { date } => cmd_words(date),
         Command::Json { date } => cmd_json(date),
         Command::Archive { output, since } => cmd_archive(output, since),
+        Command::UserArchive { username, dir } => cmd_user_archive(username, dir),
     }
 }
 
