@@ -1,3 +1,4 @@
+use axum::extract::Path;
 use chrono;
 use connections_core::Archive;
 use maud::{Markup, html};
@@ -17,16 +18,29 @@ macro_rules! inline_style {
 
 fn word_grid(children: Markup) -> Markup {
     html! {
-        div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem;" {
+        #word-grid style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem;" {
             (children)
         }
     }
 }
 
-fn word_box(word: &str, selected: bool) -> Markup {
+fn word_box(word: &str, selected: bool, game_id_or_date: &str) -> Markup {
+    let state_path = vec![
+        "api/games/nyt/",
+        game_id_or_date,
+        "/state/words/",
+        &word.to_lowercase(),
+    ]
+    .join("");
     html! {
-        button.word.selected[selected] {
-            (word)
+        @if selected {
+            button.word.selected hx-delete=(state_path) hx-swap="outerHTML" {
+                (word)
+            }
+        } @else {
+            button.word hx-put=(state_path) hx-swap="outerHTML" {
+                (word)
+            }
         }
     }
 }
@@ -36,7 +50,8 @@ pub async fn game(id_or_date: Option<String>) -> Markup {
         .await
         .expect("failed to load archive");
     let today = chrono::Utc::now().format("%Y-%m-%d").to_string();
-    let puzzle = archive.get(&id_or_date.unwrap_or(today));
+    let id_or_date = id_or_date.unwrap_or(today);
+    let puzzle = archive.get(&id_or_date);
     if puzzle.is_none() {
         return html! { h1 { "Puzzle not found!" } };
     }
@@ -82,13 +97,24 @@ pub async fn game(id_or_date: Option<String>) -> Markup {
             }
             "
         }
+        script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.10/dist/htmx.min.js"
+            integrity="sha384-H5SrcfygHmAuTDZphMHqBJLc3FhssKjG7w/CeCpFReSfwBWDTKpkzPP8c+cLsK+V"
+            crossorigin="anonymous" {}
         div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;" {
             h1 { (title) }
             (word_grid(html! {
                 @for word in &words {
-                    (word_box(word, false))
+                    (word_box(word, false, &id_or_date))
                 }
             }))
         }
     }
+}
+
+pub async fn select_word(Path((game_id_or_date, word)): Path<(String, String)>) -> Markup {
+    word_box(&word, true, &game_id_or_date)
+}
+
+pub async fn deselect_word(Path((game_id_or_date, word)): Path<(String, String)>) -> Markup {
+    word_box(&word, false, &game_id_or_date)
 }
