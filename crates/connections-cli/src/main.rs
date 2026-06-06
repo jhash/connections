@@ -2,9 +2,10 @@ use chrono::{Duration, Local, NaiveDate};
 use clap::{Parser, Subcommand};
 use connections_core::{
     archive::{Archive, ArchiveError, CommunityArchive},
-    puzzle::{Category, CommunityGame, NytPuzzle},
+    puzzle::{Category, CommunityGame, NytPuzzle, PuzzleSource},
 };
 use serde::Deserialize;
+use sqlx::SqlitePool;
 use std::collections::HashSet;
 use std::path::PathBuf;
 use tokio::fs;
@@ -45,6 +46,21 @@ enum Command {
         username: String,
         #[arg(short, long, default_value = ".")]
         dir: PathBuf,
+    },
+    /// Seed the SQLite database from archive.json and optional community files
+    Seed {
+        /// SQLite database file (created if absent)
+        #[arg(short, long, default_value = "games.db")]
+        db: PathBuf,
+        /// NYT archive file
+        #[arg(short, long, default_value = "archive.json")]
+        archive: PathBuf,
+        /// Community username archives to include (e.g. --users chloetron jaycub)
+        #[arg(short, long, num_args = 0..)]
+        users: Vec<String>,
+        /// Directory containing <username>.json files (default: current dir)
+        #[arg(long, default_value = ".")]
+        users_dir: PathBuf,
     },
 }
 
@@ -288,6 +304,152 @@ async fn cmd_user_archive(username: String, dir: PathBuf) {
     );
 }
 
+async fn seed_nyt(pool: &SqlitePool, archive_path: &PathBuf) {
+    let archive = Archive::load(Some(archive_path.as_path())).await.unwrap_or_else(|e| {
+        eprintln!("Error loading {}: {e}", archive_path.display());
+        std::process::exit(1);
+    });
+
+    let source = PuzzleSource::Nytimes.to_string();
+    let mut inserted = 0u32;
+    let mut skipped = 0u32;
+
+    for puzzle in archive.all() {
+        let ext_id = puzzle.id.to_string();
+
+        // Insert puzzle row; skip if already present.
+        let result = sqlx::query(
+            "INSERT OR IGNORE INTO puzzles (source, external_id, author, date, name)
+             VALUES (?, ?, ?, ?, NULL)",
+        )
+        .bind(&source)
+        .bind(&ext_id)
+        .bind(&puzzle.editor)
+        .bind(&puzzle.date)
+        .execute(pool)
+        .await
+        .unwrap();
+
+        if result.rows_affected() == 0 {
+            skipped += 1;
+            continue; // puzzle + its categories/cards already seeded
+        }
+
+        let puzzle_id: i64 =
+            sqlx::query_scalar("SELECT id FROM puzzles WHERE source = ? AND external_id = ?")
+                .bind(&source)
+                .bind(&ext_id)
+                .fetch_one(pool)
+                .await
+                .unwrap();
+
+        for (cat_pos, category) in puzzle.categories.iter().enumerate() {
+            let cat_id: i64 = sqlx::query_scalar(
+                "INSERT INTO categories (puzzle_id, title, position) VALUES (?, ?, ?) RETURNING id",
+            )
+            .bind(puzzle_id)
+            .bind(&category.title)
+            .bind(cat_pos as i64)
+            .fetch_one(pool)
+            .await
+            .unwrap();
+
+            for card in &category.cards {
+                sqlx::query(
+                    "INSERT INTO cards (category_id, content, image_url, image_alt, position)
+                     VALUES (?, ?, ?, ?, ?)",
+                )
+                .bind(cat_id)
+                .bind(&card.content)
+                .bind(&card.image_url)
+                .bind(&card.image_alt_text)
+                .bind(card.position as i64)
+                .execute(pool)
+                .await
+                .unwrap();
+            }
+        }
+
+        inserted += 1;
+    }
+
+    eprintln!(
+        "NYT: inserted {inserted} new puzzles, skipped {skipped} already present. Total in archive: {}",
+        archive.len()
+    );
+}
+
+async fn seed_community(pool: &SqlitePool, username: &str, users_dir: &PathBuf) {
+    let source = PuzzleSource::ConnectionsPlus.to_string();
+
+    let community = match CommunityArchive::load_for_user(username, users_dir).await {
+        Ok(a) => a,
+        Err(e) => {
+            eprintln!("Skipping {username}: {e}");
+            return;
+        }
+    };
+
+    let mut inserted = 0u32;
+    let mut skipped = 0u32;
+
+    for game in community.all() {
+        let result = sqlx::query(
+            "INSERT OR IGNORE INTO puzzles (source, external_id, author, date, name)
+             VALUES (?, ?, ?, ?, ?)",
+        )
+        .bind(&source)
+        .bind(&game.id)
+        .bind(&game.created_by)
+        .bind(&game.created_at)
+        .bind(&game.name)
+        .execute(pool)
+        .await
+        .unwrap();
+
+        if result.rows_affected() == 0 {
+            skipped += 1;
+            continue;
+        }
+
+        // Categories are not yet available (encrypted). They'll be inserted
+        // once decryption is implemented — for now just the puzzle row is enough
+        // to reference from game_states.
+
+        inserted += 1;
+    }
+
+    eprintln!(
+        "{username}: inserted {inserted} new games, skipped {skipped} already present."
+    );
+}
+
+async fn cmd_seed(db: PathBuf, archive: PathBuf, users: Vec<String>, users_dir: PathBuf) {
+    let db_url = format!("sqlite://{}?mode=rwc", db.display());
+    let pool = SqlitePool::connect(&db_url).await.unwrap_or_else(|e| {
+        eprintln!("Failed to open {}: {e}", db.display());
+        std::process::exit(1);
+    });
+
+    sqlx::migrate!("../../migrations")
+        .run(&pool)
+        .await
+        .unwrap_or_else(|e| {
+            eprintln!("Migration failed: {e}");
+            std::process::exit(1);
+        });
+
+    eprintln!("Seeding NYT archive from {} …", archive.display());
+    seed_nyt(&pool, &archive).await;
+
+    for username in &users {
+        eprintln!("Seeding community archive for {username} …");
+        seed_community(&pool, username, &users_dir).await;
+    }
+
+    eprintln!("Done. Database: {}", db.display());
+}
+
 #[tokio::main]
 async fn main() {
     match Cli::parse().command {
@@ -295,5 +457,8 @@ async fn main() {
         Command::Json { date } => cmd_json(date),
         Command::Archive { output, since } => cmd_archive(output, since).await,
         Command::UserArchive { username, dir } => cmd_user_archive(username, dir).await,
+        Command::Seed { db, archive, users, users_dir } => {
+            cmd_seed(db, archive, users, users_dir).await
+        }
     }
 }

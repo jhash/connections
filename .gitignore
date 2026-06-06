@@ -3,3 +3,8 @@
 .last-run
 connections.log
 intercept-crypto.js
+
+# SQLite database and WAL files
+games.db
+games.db-shm
+games.db-wal

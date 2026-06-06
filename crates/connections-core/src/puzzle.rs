@@ -1,4 +1,33 @@
 use serde::{Deserialize, Serialize};
+use std::fmt;
+use std::str::FromStr;
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum PuzzleSource {
+    Nytimes,
+    ConnectionsPlus,
+}
+
+impl fmt::Display for PuzzleSource {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Nytimes => write!(f, "nytimes"),
+            Self::ConnectionsPlus => write!(f, "connections_plus"),
+        }
+    }
+}
+
+impl FromStr for PuzzleSource {
+    type Err = String;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "nytimes" => Ok(Self::Nytimes),
+            "connections_plus" => Ok(Self::ConnectionsPlus),
+            _ => Err(format!("unknown source: {s}")),
+        }
+    }
+}
 
 /// NYT puzzle as stored in archive.json.
 /// `date` is derived from the request URL — verified to always match `print_date`.
