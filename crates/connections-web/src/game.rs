@@ -45,7 +45,7 @@ fn word_box(word: &str, selected: bool, game_id_or_date: &str) -> Markup {
 }
 
 pub async fn game(archive: SharedArchive, id_or_date: Option<String>) -> Markup {
-    let today = chrono::Utc::now().format("%Y-%m-%d").to_string();
+    let today = chrono::Local::now().format("%Y-%m-%d").to_string();
     let id_or_date = id_or_date.unwrap_or(today);
     let puzzle = archive.get(&id_or_date);
     if puzzle.is_none() {
@@ -58,10 +58,7 @@ pub async fn game(archive: SharedArchive, id_or_date: Option<String>) -> Markup 
         .iter()
         .flat_map(|c| c.cards.iter())
         .collect::<Vec<_>>();
-    let words = cards
-        .iter()
-        .map(|c| c.content.as_deref().unwrap_or_default())
-        .collect::<Vec<_>>();
+    let words = cards.iter().map(|c| c.label()).collect::<Vec<_>>();
 
     html! {
         (DOCTYPE)
@@ -98,7 +95,7 @@ pub async fn game(archive: SharedArchive, id_or_date: Option<String>) -> Markup 
         }
         script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.10/dist/htmx.min.js"
             integrity="sha384-H5SrcfygHmAuTDZphMHqBJLc3FhssKjG7w/CeCpFReSfwBWDTKpkzPP8c+cLsK+V"
-            crossorigin="anonymous";
+            crossorigin="anonymous" {}
         div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;" {
             h1 { (title) }
             (word_grid(html! {

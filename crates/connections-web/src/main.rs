@@ -52,12 +52,8 @@ async fn main() {
         });
     let archive = Arc::new(archive);
 
-    let db_url = std::env::var("DATABASE_URL").unwrap_or_else(|_| {
-        format!(
-            "sqlite://{}?mode=rwc",
-            workspace_path("games.db").display()
-        )
-    });
+    let db_url = std::env::var("DATABASE_URL")
+        .unwrap_or_else(|_| format!("sqlite://{}?mode=rwc", workspace_path("games.db").display()));
 
     let db = SqlitePoolOptions::new()
         .max_connections(5)
