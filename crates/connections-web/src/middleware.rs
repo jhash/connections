@@ -8,6 +8,12 @@ use crate::state::AppState;
 #[derive(Clone, Debug)]
 pub struct SessionId(pub String);
 
+impl SessionId {
+    pub fn as_str(&self) -> &str {
+        &self.0
+    }
+}
+
 /// Reads the `session_id` cookie; creates a new session row if absent.
 /// Touches `last_seen` on every request.
 /// Must be applied with `axum::middleware::from_fn_with_state`.
