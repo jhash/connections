@@ -13,3 +13,4 @@ uuid = { version = "1", features = ["v4"] }
 maud = { version = "*", features = ["axum"] }
 chrono = "0.4"
 tower-http = { version = "0.6", features = ["compression-gzip"] }
+listenfd = "1.0.2"

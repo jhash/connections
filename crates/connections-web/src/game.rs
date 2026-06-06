@@ -1,7 +1,7 @@
 use axum::extract::Path;
 use chrono;
 use connections_core::archive::SharedArchive;
-use maud::{Markup, html};
+use maud::{DOCTYPE, Markup, html};
 
 // From gemini
 #[allow(unused_macros)]
@@ -64,6 +64,9 @@ pub async fn game(archive: SharedArchive, id_or_date: Option<String>) -> Markup 
         .collect::<Vec<_>>();
 
     html! {
+        (DOCTYPE)
+        meta charset="utf-8";
+        meta name="viewport" content="width=device-width, initial-scale=1";
         style {
             "
             .word {
@@ -95,7 +98,7 @@ pub async fn game(archive: SharedArchive, id_or_date: Option<String>) -> Markup 
         }
         script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.10/dist/htmx.min.js"
             integrity="sha384-H5SrcfygHmAuTDZphMHqBJLc3FhssKjG7w/CeCpFReSfwBWDTKpkzPP8c+cLsK+V"
-            crossorigin="anonymous" {}
+            crossorigin="anonymous";
         div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;" {
             h1 { (title) }
             (word_grid(html! {

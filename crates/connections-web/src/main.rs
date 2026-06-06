@@ -5,6 +5,7 @@ use axum::{
 };
 use connections_core::archive::Archive;
 use connections_web::{deselect_word, game, select_word};
+use listenfd::ListenFd;
 use sqlx::sqlite::SqlitePoolOptions;
 use std::path::Path as StdPath;
 use std::sync::Arc;
@@ -71,8 +72,17 @@ async fn main() {
         .merge(session_routes)
         .with_state(state);
 
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
-    println!("Listening on http://0.0.0.0:3000");
+    // In dev: systemfd passes an already-bound socket so the port stays alive
+    // across recompiles. Falls back to a fresh bind for production / plain cargo run.
+    let mut listenfd = ListenFd::from_env();
+    let listener = match listenfd.take_tcp_listener(0).unwrap() {
+        Some(std_listener) => tokio::net::TcpListener::from_std(std_listener).unwrap(),
+        None => {
+            let addr = std::env::var("BIND").unwrap_or_else(|_| "0.0.0.0:3000".to_string());
+            tokio::net::TcpListener::bind(&addr).await.unwrap()
+        }
+    };
+    println!("Listening on http://{}", listener.local_addr().unwrap());
     axum::serve(listener, app.into_make_service())
         .await
         .unwrap();

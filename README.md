@@ -40,6 +40,69 @@ The repo is a [Cargo workspace](https://doc.rust-lang.org/book/ch14-03-cargo-wor
 
 Re-run anytime — already-fetched dates are skipped. Image-based puzzles (April Fools, Halloween, etc.) are stored with `image_url` and `image_alt_text` in place of `content`.
 
+### `user-archive` — fetch all puzzles by a connectionsplus.io username
+
+```bash
+./target/release/connections user-archive chloetron
+./target/release/connections user-archive jaycub --dir /some/path
+```
+
+### `seed` — populate SQLite from archive files (idempotent)
+
+Run once after first clone, and again whenever the archive grows.
+
+```bash
+./target/release/connections seed                                  # archive.json → games.db
+./target/release/connections seed --users chloetron jaycub         # include community archives
+./target/release/connections seed --db /path/to/games.db --archive /path/to/archive.json
+```
+
+Re-run anytime — puzzles already in the database are skipped.
+
+---
+
+## Web server
+
+### First-time setup
+
+```bash
+# 1. Seed the database
+./target/release/connections seed --users chloetron jaycub
+
+# 2. Install watch tools (once)
+cargo install cargo-watch systemfd
+```
+
+### Development (hot-reload)
+
+The server uses [`listenfd`](https://crates.io/crates/listenfd) so the TCP socket stays alive across recompiles — no "address already in use" errors and the browser doesn't disconnect.
+
+```bash
+systemfd --no-pid -s http::3000 -- cargo watch -x 'run -p connections-web'
+```
+
+Every time you save a source file, the server recompiles and restarts in-place. The port stays bound throughout.
+
+### Production
+
+```bash
+# Plain binary — binds 0.0.0.0:3000 by default
+./target/release/connections-web
+
+# Custom port
+BIND=0.0.0.0:8080 ./target/release/connections-web
+
+# Custom database
+DATABASE_URL=sqlite:///data/games.db ./target/release/connections-web
+```
+
+Environment variables:
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `DATABASE_URL` | `sqlite://../../games.db?mode=rwc` | SQLite file path |
+| `BIND` | `0.0.0.0:3000` | Address and port to listen on |
+
 ---
 
 ## Daily auto-archive
