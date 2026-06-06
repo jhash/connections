@@ -6,9 +6,11 @@ use crate::state::AppState;
 
 /// Injected into request extensions so handlers can read the session id.
 #[derive(Clone, Debug)]
+#[allow(dead_code)]
 pub struct SessionId(pub String);
 
 impl SessionId {
+    #[allow(dead_code)]
     pub fn as_str(&self) -> &str {
         &self.0
     }
