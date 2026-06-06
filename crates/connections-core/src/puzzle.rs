@@ -14,7 +14,7 @@ pub struct Puzzle {
 
 /// Raw NYT API response shape (not stored; mapped into Puzzle on fetch).
 #[derive(Deserialize)]
-pub struct ApiPuzzle {
+pub struct NytPuzzle {
     pub id: u32,
     #[serde(default)]
     pub editor: Option<String>,

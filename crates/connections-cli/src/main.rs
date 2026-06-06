@@ -2,7 +2,7 @@ use chrono::{Duration, Local, NaiveDate};
 use clap::{Parser, Subcommand};
 use connections_core::{
     archive::{Archive, ArchiveError, CommunityArchive},
-    puzzle::{ApiPuzzle, Category, CommunityGame},
+    puzzle::{NytPuzzle, Category, CommunityGame},
 };
 use serde::Deserialize;
 use std::collections::HashSet;
@@ -76,7 +76,7 @@ fn fetch_puzzle_http(date: &str) -> Result<connections_core::puzzle::Puzzle, Str
     if !resp.status().is_success() {
         return Err(format!("HTTP {}", resp.status()));
     }
-    let raw = resp.json::<ApiPuzzle>().map_err(|e| e.to_string())?;
+    let raw = resp.json::<NytPuzzle>().map_err(|e| e.to_string())?;
     Ok(connections_core::puzzle::Puzzle {
         date: date.to_string(),
         id: raw.id,
