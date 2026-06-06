@@ -4,6 +4,65 @@ Inspired by [Mariam et al. (2024)](https://arxiv.org/abs/2406.11012), which esta
 
 ---
 
+## Guide to This Repo
+
+### File map
+
+| File / folder | What it is | Who reads it |
+|---------------|-----------|--------------|
+| `README.md` | Project intro, CLI usage, setup | You |
+| `TODO.md` (this file) | Roadmap with checkboxes | You |
+| `PAPERS.md` | Prior research with summaries | You |
+| `plans/` | Detailed implementation specs for each section | You + AI agents when building |
+| `src/main.rs` | All current Rust code (CLI) | You when learning Rust |
+| `archive.json` | Every NYT puzzle ever (~1,090) | Code consumes it |
+| `chloetron.json`, `jaycub.json` | Community puzzle archives | Code consumes it |
+| `scripts/` | Shell scripts for daily automation | You run these once to set up |
+| `Cargo.toml` | Rust dependency list | Rust toolchain reads it |
+
+**`plans/` are for both you and agents.** Read them before starting a section — they explain *why* each decision was made, which is useful context whether you're coding yourself or directing an agent. The detail level assumes you'll look up unfamiliar Rust/ML concepts as you go; nothing in them requires prior experience to follow.
+
+### Build order
+
+The sections depend on each other. Here's the order that makes sense to work through, and why:
+
+```
+1. Data  ←  everything downstream needs an annotated archive
+    ↓
+3. Agent Harness  ←  needed before you can run any evals or watch agents play
+    ↓
+5. Evaluation  ←  measures whether changes actually help
+    ↓
+6. Daily Solver  ←  automates the eval loop once it works manually
+    ↓
+7. Fine-tuning  ←  needs eval to measure improvement
+```
+
+In parallel with any of the above (no hard dependencies):
+```
+2. Interfaces (TUI + Web)  ←  standalone, good for learning Rust hands-on
+4. Visualization  ←  depends on agent harness producing run logs, otherwise standalone
+8. Web Service  ←  assembles everything into a single app; build last
+9. Open Collaboration  ←  documentation and publishing; ongoing, not a code milestone
+```
+
+**Recommended starting point if you're new to Rust:** Section 2 (TUI). It's self-contained, has immediate visual feedback, and teaches the core Rust patterns (structs, enums, match, traits) you'll need everywhere else. `plans/02-interfaces.md` walks through it step by step.
+
+**Recommended starting point if you want to see AI results fast:** Section 3 (Agent Harness) + Section 5 (Eval). Gets a model playing the game and scoring it within a few days of work.
+
+### How to use the plans
+
+Each file in `plans/` covers one section. Structure is always:
+- **Goal** — one sentence saying what you're building
+- **Dependencies** — what needs to exist first
+- **Design decisions** — why the code is structured the way it is (read this before starting)
+- **Implementation steps** — numbered, in order, concrete
+- **Verification** — shell commands to confirm it's working
+
+The plans reference Rust crates (libraries) by name. When you encounter an unfamiliar one, [docs.rs](https://docs.rs) has documentation for every published Rust crate.
+
+---
+
 ## 1. Data
 
 - [x] Archive all NYT puzzles (`archive` subcommand, ~1,090 games, back to 2023-06-12)
