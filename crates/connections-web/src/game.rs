@@ -1,8 +1,7 @@
 use axum::extract::Path;
 use chrono;
-use connections_core::Archive;
+use connections_core::archive::SharedArchive;
 use maud::{Markup, html};
-use std::path::Path as StdPath;
 
 // From gemini
 #[allow(unused_macros)]
@@ -45,10 +44,7 @@ fn word_box(word: &str, selected: bool, game_id_or_date: &str) -> Markup {
     }
 }
 
-pub async fn game(id_or_date: Option<String>) -> Markup {
-    let archive = Archive::load(Some(&StdPath::new("../../archive.json")))
-        .await
-        .expect("failed to load archive");
+pub async fn game(archive: SharedArchive, id_or_date: Option<String>) -> Markup {
     let today = chrono::Utc::now().format("%Y-%m-%d").to_string();
     let id_or_date = id_or_date.unwrap_or(today);
     let puzzle = archive.get(&id_or_date);

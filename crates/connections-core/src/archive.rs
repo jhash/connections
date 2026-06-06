@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
+use std::sync::Arc;
 use thiserror::Error;
 use tokio::fs;
 
@@ -109,6 +110,8 @@ impl Archive {
         self.by_date.keys().map(String::as_str)
     }
 }
+
+pub type SharedArchive = Arc<Archive>;
 
 /// In-memory index of community puzzles from a `<username>.json` file.
 pub struct CommunityArchive {

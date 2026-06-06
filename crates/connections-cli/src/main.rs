@@ -2,7 +2,7 @@ use chrono::{Duration, Local, NaiveDate};
 use clap::{Parser, Subcommand};
 use connections_core::{
     archive::{Archive, ArchiveError, CommunityArchive},
-    puzzle::{NytPuzzle, Category, CommunityGame},
+    puzzle::{Category, CommunityGame, NytPuzzle},
 };
 use serde::Deserialize;
 use std::collections::HashSet;
@@ -168,14 +168,15 @@ async fn cmd_archive(output: PathBuf, since: String) {
         std::process::exit(1);
     });
 
-    let mut puzzles: Vec<connections_core::puzzle::Puzzle> = match Archive::load(&output).await {
-        Ok(a) => a.all().to_vec(),
-        Err(ArchiveError::NotFound(_)) => vec![],
-        Err(e) => {
-            eprintln!("Error reading archive: {e}");
-            std::process::exit(1);
-        }
-    };
+    let mut puzzles: Vec<connections_core::puzzle::Puzzle> =
+        match Archive::load(Some(&output)).await {
+            Ok(a) => a.all().to_vec(),
+            Err(ArchiveError::NotFound(_)) => vec![],
+            Err(e) => {
+                eprintln!("Error reading archive: {e}");
+                std::process::exit(1);
+            }
+        };
 
     let cached: HashSet<String> = puzzles.iter().map(|p| p.date.clone()).collect();
     eprintln!("Cached: {} puzzles", cached.len());
