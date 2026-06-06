@@ -2,5 +2,6 @@
 members = [
     "crates/connections-core",
     "crates/connections-cli",
+    "crates/connections-web",
 ]
 resolver = "2"

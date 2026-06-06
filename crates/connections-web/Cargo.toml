@@ -1,0 +1,11 @@
+[package]
+name = "connections-web"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+axum = "0.8.9"
+connections-core = { path = "../connections-core" }
+tokio = { version = "1", features = ["full"] }
+maud = { version = "*", features = ["axum"] }
+chrono = "0.4.45"

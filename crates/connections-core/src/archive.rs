@@ -30,7 +30,8 @@ pub struct Archive {
 impl Archive {
     /// Load an NYT puzzle archive from a JSON file.
     /// Pass `username` to load from `<username>.json` in `dir` instead of the default path.
-    pub async fn load(path: &Path) -> Result<Self, ArchiveError> {
+    pub async fn load(path: Option<&Path>) -> Result<Self, ArchiveError> {
+        let path = path.unwrap_or(&Path::new("archive.json"));
         if !path.exists() {
             return Err(ArchiveError::NotFound(path.to_path_buf()));
         }
@@ -51,7 +52,7 @@ impl Archive {
             None => "archive.json".to_string(),
             Some(u) => format!("{u}.json"),
         };
-        Self::load(&dir.join(filename)).await
+        Self::load(Some(&dir.join(filename))).await
     }
 
     fn from_puzzles(puzzles: Vec<Puzzle>) -> Self {
@@ -61,7 +62,11 @@ impl Archive {
             by_date.insert(p.date.clone(), i);
             by_id.insert(p.id, i);
         }
-        Self { puzzles, by_date, by_id }
+        Self {
+            puzzles,
+            by_date,
+            by_id,
+        }
     }
 
     /// Look up a puzzle by date ("YYYY-MM-DD") or numeric id (as a string, e.g. "512").

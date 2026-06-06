@@ -11,6 +11,7 @@ cargo build --release
 The repo is a [Cargo workspace](https://doc.rust-lang.org/book/ch14-03-cargo-workspaces.html). Source lives in `crates/`:
 - `crates/connections-cli/` — the CLI binary (`connections`)
 - `crates/connections-core/` — shared game logic (grows as features are added)
+- `crates/connections-web/` — the web UI
 
 `cargo build --release` from the repo root builds everything. The binary is always at `target/release/connections`.
 
