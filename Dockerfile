@@ -4,7 +4,7 @@
 FROM rust:1-slim AS builder
 WORKDIR /build
 COPY Cargo.toml Cargo.lock ./
-COPY src ./src
+COPY crates ./crates
 RUN cargo build --release
 
 # ── Runtime stage ─────────────────────────────────────────────────────────────

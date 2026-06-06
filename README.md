@@ -8,6 +8,12 @@ Research platform for studying and solving the [NYT Connections](https://www.nyt
 cargo build --release
 ```
 
+The repo is a [Cargo workspace](https://doc.rust-lang.org/book/ch14-03-cargo-workspaces.html). Source lives in `crates/`:
+- `crates/connections-cli/` — the CLI binary (`connections`)
+- `crates/connections-core/` — shared game logic (grows as features are added)
+
+`cargo build --release` from the repo root builds everything. The binary is always at `target/release/connections`.
+
 ## CLI
 
 ### `words` — all 16 words sorted by board position
