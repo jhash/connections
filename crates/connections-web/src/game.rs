@@ -1,5 +1,5 @@
 use crate::AppState;
-use axum::extract::Path;
+use axum::extract::{Path, State};
 use chrono;
 use connections_core::puzzle::{Card, Category, NytPuzzle};
 use maud::{DOCTYPE, Markup, html};
@@ -24,25 +24,152 @@ fn word_grid(children: Markup) -> Markup {
     }
 }
 
-fn word_box(word: &str, selected: bool, game_id_or_date: &str) -> Markup {
-    let state_path = vec![
-        "api/games/nyt/",
-        game_id_or_date,
-        "/state/words/",
-        &word.to_lowercase(),
+fn word_box(
+    word: &str,
+    selected: bool,
+    puzzle_id: &i64,
+    session_id: &str,
+    card_id: &i64,
+) -> Markup {
+    let update_path = vec![
+        "api/puzzles",
+        &puzzle_id.to_string(),
+        "sessions",
+        session_id,
+        "selected_cards",
+        &card_id.to_string(),
     ]
-    .join("");
+    .join("/");
     html! {
         @if selected {
-            button.word.selected hx-delete=(state_path) hx-swap="outerHTML" {
+            button.word.selected hx-delete=(update_path) hx-swap="outerHTML" {
                 (word)
             }
         } @else {
-            button.word hx-put=(state_path) hx-swap="outerHTML" {
+            button.word hx-put=(update_path) hx-swap="outerHTML" {
                 (word)
             }
         }
     }
+}
+
+#[derive(Clone, Copy, Default)]
+pub struct SelectedCards(u16);
+
+impl SelectedCards {
+    pub fn is_selected(self, position: u8) -> bool {
+        (self.0 >> position) & 1 == 1
+    }
+
+    pub fn select(&mut self, position: u8) {
+        self.0 |= 1 << position;
+    }
+
+    pub fn deselect(&mut self, position: u8) {
+        self.0 &= !(1 << position);
+    }
+
+    pub fn toggle(&mut self, position: u8) {
+        self.0 ^= 1 << position;
+    }
+
+    pub fn count(self) -> u32 {
+        self.0.count_ones()
+    }
+
+    pub fn clear(&mut self) {
+        self.0 = 0;
+    }
+
+    pub fn as_u16(self) -> u16 {
+        self.0
+    }
+}
+
+impl From<i64> for SelectedCards {
+    fn from(v: i64) -> Self {
+        SelectedCards(v as u16)
+    }
+}
+
+struct GameState {
+    pub id: i64,
+    pub lives: u8,
+    pub selected: SelectedCards,
+}
+
+async fn save_selected(state: &AppState, game_state: &GameState) {
+    let mask = game_state.selected.as_u16() as i64;
+    sqlx::query!(
+        "UPDATE game_states SET selected_mask = ? WHERE id = ?",
+        mask,
+        game_state.id
+    )
+    .execute(&state.db)
+    .await
+    .expect("failed to save selected mask");
+}
+
+async fn find_or_create_game_state(
+    state: &AppState,
+    session_id: &str,
+    puzzle_id: &i64,
+) -> GameState {
+    let existing = sqlx::query!(
+        "SELECT id, lives, selected_mask FROM game_states
+           WHERE session_id = ? AND puzzle_id = ?",
+        session_id,
+        puzzle_id
+    )
+    .fetch_optional(&state.db)
+    .await
+    .expect("failed to fetch game state");
+
+    if let Some(row) = existing {
+        return GameState {
+            id: row.id.expect("game_state.id is null"),
+            lives: row.lives as u8,
+            selected: SelectedCards::from(row.selected_mask),
+        };
+    }
+
+    let id = sqlx::query!(
+        "INSERT INTO game_states (session_id, puzzle_id) VALUES (?, ?) RETURNING id",
+        session_id,
+        puzzle_id
+    )
+    .fetch_one(&state.db)
+    .await
+    .expect("failed to create game state")
+    .id
+    .expect("inserted game_state.id is null");
+
+    GameState {
+        id,
+        lives: 4,
+        selected: SelectedCards::default(),
+    }
+}
+
+async fn get_card(state: &AppState, id: i64) -> Option<Card> {
+    let card = sqlx::query!("SELECT id, content, position FROM cards WHERE id = ?", id)
+        .fetch_optional(&state.db)
+        .await
+        .expect("failed to fetch card");
+
+    if card.is_none() {
+        return None;
+    }
+
+    let card = card.unwrap();
+
+    Some(Card {
+        id: Some(card.id),
+        content: card.content,
+        position: card.position as u8,
+        image_alt_text: None,
+        image_url: None,
+    })
 }
 
 async fn get_puzzle(state: &AppState, date: &str) -> Option<NytPuzzle> {
@@ -86,6 +213,7 @@ async fn get_puzzle(state: &AppState, date: &str) -> Option<NytPuzzle> {
             })
             .cards
             .push(Card {
+                id: row.card_id,
                 content: row.content,
                 image_url: row.image_url,
                 image_alt_text: row.image_alt,
@@ -104,7 +232,7 @@ async fn get_puzzle(state: &AppState, date: &str) -> Option<NytPuzzle> {
     })
 }
 
-pub async fn game(state: AppState, id_or_date: Option<String>) -> Markup {
+pub async fn game_page(state: AppState, id_or_date: Option<String>, session_id: String) -> Markup {
     let today = chrono::Local::now().format("%Y-%m-%d").to_string();
     let id_or_date = id_or_date.unwrap_or(today);
     // let puzzle = state.archive.get(&id_or_date);
@@ -122,7 +250,8 @@ pub async fn game(state: AppState, id_or_date: Option<String>) -> Markup {
 
     cards.sort_by(|a, b| a.position.cmp(&b.position));
 
-    let words = cards.iter().map(|c| c.label()).collect::<Vec<_>>();
+    let game_state = find_or_create_game_state(&state, &session_id, &puzzle.id.unwrap()).await;
+    let lives = game_state.lives;
 
     html! {
         (DOCTYPE)
@@ -194,19 +323,51 @@ pub async fn game(state: AppState, id_or_date: Option<String>) -> Markup {
             crossorigin="anonymous" {}
         .game-container {
             h1 { (title) }
+            h5 { ("Lives: ")(lives) }
             (word_grid(html! {
-                @for word in &words {
-                    (word_box(word, false, &id_or_date))
+                @for card in cards {
+                    (word_box(&card.content.as_deref().unwrap(), game_state.selected.is_selected(card.position), &puzzle.id.unwrap(), &session_id, &card.id.unwrap()))
                 }
             }))
         }
     }
 }
 
-pub async fn select_word(Path((game_id_or_date, word)): Path<(String, String)>) -> Markup {
-    word_box(&word, true, &game_id_or_date)
+// "/api/puzzles/{puzzle_id}/sessions/{session_id}/selected_cards/{card_id}"
+pub async fn select_word(
+    State(state): State<AppState>,
+    Path((puzzle_id, session_id, card_id)): Path<(i64, String, String)>,
+) -> Markup {
+    let card = get_card(&state, card_id.parse().unwrap()).await;
+    if card.is_none() {
+        println!("Card is none: {}", card_id)
+    }
+    let card = card.unwrap();
+    let mut game_state = find_or_create_game_state(&state, &session_id, &puzzle_id).await;
+    game_state.selected.select(card.position);
+    save_selected(&state, &game_state).await;
+    word_box(
+        &card.content.as_deref().unwrap(),
+        true,
+        &puzzle_id,
+        &session_id,
+        &card.id.unwrap(),
+    )
 }
 
-pub async fn deselect_word(Path((game_id_or_date, word)): Path<(String, String)>) -> Markup {
-    word_box(&word, false, &game_id_or_date)
+pub async fn deselect_word(
+    State(state): State<AppState>,
+    Path((puzzle_id, session_id, card_id)): Path<(i64, String, String)>,
+) -> Markup {
+    let card = get_card(&state, card_id.parse().unwrap()).await.unwrap();
+    let mut game_state = find_or_create_game_state(&state, &session_id, &puzzle_id).await;
+    game_state.selected.deselect(card.position);
+    save_selected(&state, &game_state).await;
+    word_box(
+        &card.content.as_deref().unwrap(),
+        false,
+        &puzzle_id,
+        &session_id,
+        &card.id.unwrap(),
+    )
 }

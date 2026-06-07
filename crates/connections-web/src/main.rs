@@ -4,13 +4,15 @@ use axum::{
     routing::{delete, get, put},
 };
 use connections_core::archive::Archive;
-use connections_web::{AppState, deselect_word, game, select_word};
+use connections_web::{AppState, deselect_word, game_page, select_word};
 use listenfd::ListenFd;
 use sqlx::sqlite::SqlitePoolOptions;
 use std::path::PathBuf;
 use std::sync::Arc;
 
 mod middleware;
+use self::middleware::SessionId;
+use axum::Extension;
 
 /// Resolve a path relative to the workspace root (two levels up from this crate).
 /// Works regardless of the current working directory when the binary is invoked.
@@ -24,12 +26,16 @@ fn workspace_path(relative: &str) -> PathBuf {
 async fn human_play_page(
     State(state): State<AppState>,
     Path(id_or_date): Path<String>,
+    Extension(SessionId(session_id)): Extension<SessionId>,
 ) -> maud::Markup {
-    game(state, Some(id_or_date)).await
+    game_page(state, Some(id_or_date), session_id).await
 }
 
-async fn home_page(State(state): State<AppState>) -> maud::Markup {
-    game(state, None).await
+async fn home_page(
+    State(state): State<AppState>,
+    Extension(SessionId(session_id)): Extension<SessionId>,
+) -> maud::Markup {
+    game_page(state, None, session_id).await
 }
 
 #[tokio::main]
@@ -69,13 +75,14 @@ async fn main() {
     let state = AppState { archive, db };
 
     let session_routes = Router::new()
+        .route("/", get(home_page))
         .route("/{id_or_date}", get(human_play_page))
         .route(
-            "/api/games/nyt/{id_or_date}/state/words/{word}",
+            "/api/puzzles/{puzzle_id}/sessions/{session_id}/selected_cards/{card_id}",
             put(select_word),
         )
         .route(
-            "/api/games/nyt/{id_or_date}/state/words/{word}",
+            "/api/puzzles/{puzzle_id}/sessions/{session_id}/selected_cards/{card_id}",
             delete(deselect_word),
         )
         .route_layer(axum::middleware::from_fn_with_state(
@@ -86,7 +93,6 @@ async fn main() {
     let app = Router::new()
         .route("/health", get(|| async { "ok" }))
         .route("/favicon.ico", get(|| async { "" }))
-        .route("/", get(home_page))
         .merge(session_routes)
         .with_state(state);
 

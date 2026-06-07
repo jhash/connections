@@ -1,0 +1,32 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT id, lives, selected_mask FROM game_states\n           WHERE session_id = ? AND puzzle_id = ?",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "lives",
+        "ordinal": 1,
+        "type_info": "Integer"
+      },
+      {
+        "name": "selected_mask",
+        "ordinal": 2,
+        "type_info": "Integer"
+      }
+    ],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": [
+      true,
+      false,
+      false
+    ]
+  },
+  "hash": "6c12820291510b8bb44b1d12e5cd832eebd47080eb6725ec75ef78072879a4b4"
+}

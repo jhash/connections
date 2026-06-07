@@ -68,6 +68,7 @@ pub struct Card {
     #[serde(default)]
     pub image_alt_text: Option<String>,
     pub position: u8,
+    pub id: Option<i64>,
 }
 
 impl Card {

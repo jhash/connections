@@ -1,0 +1,1 @@
+ALTER TABLE game_states ADD COLUMN selected_mask INTEGER NOT NULL DEFAULT 0;
