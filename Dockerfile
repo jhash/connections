@@ -28,4 +28,5 @@ WORKDIR /repo
 ENV PROJECT_DIR=/repo
 ENV BINARY=/usr/local/bin/connections
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["/bin/bash", "/scripts/run-daily.sh"]
+# Loop with 1-hour sleep; run-daily.sh uses a stamp file to prevent double-runs within the same day
+CMD ["sh", "-c", "while true; do /bin/bash /scripts/run-daily.sh; sleep 3600; done"]
