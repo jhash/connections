@@ -50,3 +50,10 @@ jobs:
         run: |
           rm -rf /home/jakehash/.cache/buildx/connections
           mv /home/jakehash/.cache/buildx/connections-new /home/jakehash/.cache/buildx/connections
+
+      - name: Deploy to swarm (oci)
+        run: |
+          ssh -o StrictHostKeyChecking=accept-new \
+            -i ~/.ssh/id_ci \
+            deploy@${{ secrets.OCI_SERVER_IP }} \
+            'docker service update --image jhash14/connections-web:latest connections_web'
