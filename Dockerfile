@@ -28,5 +28,6 @@ WORKDIR /repo
 ENV PROJECT_DIR=/repo
 ENV BINARY=/usr/local/bin/connections
 ENTRYPOINT ["/entrypoint.sh"]
-# Loop with 1-hour sleep; run-daily.sh uses a stamp file to prevent double-runs within the same day
-CMD ["sh", "-c", "while true; do /bin/bash /scripts/run-daily.sh; sleep 3600; done"]
+# Loop with 1-hour sleep; run-daily.sh stamp prevents double archive fetches per day.
+# Seed always runs (INSERT OR IGNORE — idempotent) to pick up any new puzzles.
+CMD ["sh", "-c", "while true; do /bin/bash /scripts/run-daily.sh; /usr/local/bin/connections seed --db /data/games.db --archive /repo/archive.json; sleep 3600; done"]
