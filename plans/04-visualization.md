@@ -117,11 +117,11 @@ ls runs/
 cat runs/*.ndjson | jq -s 'length'   # expect: N turn events
 
 # SSE stream (offline replay)
-curl -N "http://localhost:3000/watch/<run_id>/stream"
+curl -N "http://localhost:3062/watch/<run_id>/stream"
 # expect: stream of SSE events with turn data
 
 # Watch page
-open http://localhost:3000/watch/<run_id>
+open http://localhost:3062/watch/<run_id>
 # verify board updates as events arrive
 
 # Terminal replay

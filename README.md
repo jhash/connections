@@ -75,25 +75,27 @@ cargo install cargo-watch systemfd
 
 ### Development (hot-reload)
 
-The server uses [`listenfd`](https://crates.io/crates/listenfd) so the TCP socket stays alive across recompiles — no "address already in use" errors and the browser doesn't disconnect.
-
 ```bash
-systemfd --no-pid -s http::3000 -- cargo watch -x 'run -p connections-web'
+./scripts/dev.sh
 ```
 
-Every time you save a source file, the server recompiles and restarts in-place. The port stays bound throughout.
+Uses [`listenfd`](https://crates.io/crates/listenfd) so the TCP socket stays alive across recompiles — no "address already in use" errors and the browser doesn't disconnect. Every save triggers a recompile and in-place restart.
 
 ### Production
 
 ```bash
-# Plain binary — binds 0.0.0.0:3000 by default
+./scripts/prod.sh
+```
+
+Builds a release binary and runs it. No file watching overhead.
+
+```bash
+# Custom port or database
+BIND=0.0.0.0:8080 ./scripts/prod.sh
+DATABASE_URL=sqlite:///data/games.db ./scripts/prod.sh
+
+# Or run an already-built binary directly
 ./target/release/connections-web
-
-# Custom port
-BIND=0.0.0.0:8080 ./target/release/connections-web
-
-# Custom database
-DATABASE_URL=sqlite:///data/games.db ./target/release/connections-web
 ```
 
 Environment variables:
@@ -101,7 +103,7 @@ Environment variables:
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `DATABASE_URL` | `sqlite://../../games.db?mode=rwc` | SQLite file path |
-| `BIND` | `0.0.0.0:3000` | Address and port to listen on |
+| `BIND` | `0.0.0.0:3062` | Address and port to listen on |
 
 ---
 

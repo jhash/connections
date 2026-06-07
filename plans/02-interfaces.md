@@ -128,6 +128,6 @@ cargo run -p connections-cli -- play --replay 2026-06-05
 
 # Web
 cargo run -p connections-web
-# open http://localhost:3000/play
+# open http://localhost:3062/play
 # submit guesses; verify HTMX swaps board; verify lives decrement; verify solved band appears
 ```

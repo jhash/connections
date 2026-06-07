@@ -125,29 +125,29 @@ Add `GET /health` → `200 OK` for load balancer checks.
 
 ```bash
 cargo run -p connections-web
-# open http://localhost:3000
+# open http://localhost:3062
 
 # Play a game
-open http://localhost:3000/play
+open http://localhost:3062/play
 # submit 4 guesses; verify HTMX swaps board; lives decrement; solved band appears on correct guess
 
 # Leaderboard
-open http://localhost:3000/agents
+open http://localhost:3062/agents
 # verify model table renders; SVG charts visible
 
 # Agent watch (requires a run log)
 connections solve --model gpt-4o --date 2024-01-15
-open "http://localhost:3000/watch/$(ls runs/ | head -1 | sed 's/.ndjson//')"
+open "http://localhost:3062/watch/$(ls runs/ | head -1 | sed 's/.ndjson//')"
 # verify board replays step by step
 
 # Archive browser
-open "http://localhost:3000/archive?taxonomy=Encyclopedic"
+open "http://localhost:3062/archive?taxonomy=Encyclopedic"
 # verify filter works; rows link to puzzle detail
 
 # Community profile
-open http://localhost:3000/community/chloetron
+open http://localhost:3062/community/chloetron
 # verify 49 games listed
 
 # API
-curl http://localhost:3000/api/leaderboard | jq '.entries | length'
+curl http://localhost:3062/api/leaderboard | jq '.entries | length'
 ```

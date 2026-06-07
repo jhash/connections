@@ -87,6 +87,7 @@ async fn main() {
         ));
 
     let app = Router::new()
+        .route("/health", get(|| async { "ok" }))
         .route("/favicon.ico", get(|| async { "" }))
         .route("/", get(home_page))
         .merge(session_routes)
@@ -102,7 +103,7 @@ async fn main() {
             tokio::net::TcpListener::from_std(std_listener).unwrap()
         }
         None => {
-            let addr = std::env::var("BIND").unwrap_or_else(|_| "0.0.0.0:3000".to_string());
+            let addr = std::env::var("BIND").unwrap_or_else(|_| "0.0.0.0:3062".to_string());
             tokio::net::TcpListener::bind(&addr).await.unwrap()
         }
     };
