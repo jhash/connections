@@ -13,6 +13,8 @@ RUN cargo chef cook --release --recipe-path recipe.json -p connections-web
 COPY Cargo.toml Cargo.lock ./
 COPY crates/ ./crates/
 COPY migrations/ ./migrations/
+COPY .sqlx/ ./.sqlx/
+ENV SQLX_OFFLINE=true
 RUN cargo build --release -p connections-web
 
 FROM debian:bookworm-slim
