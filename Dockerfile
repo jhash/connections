@@ -11,7 +11,7 @@ COPY crates ./crates
 COPY .sqlx ./.sqlx
 COPY migrations ./migrations
 ENV SQLX_OFFLINE=true
-RUN cargo build --release
+RUN cargo build --release --jobs 1
 
 # ── Runtime stage ─────────────────────────────────────────────────────────────
 FROM debian:bookworm-slim
