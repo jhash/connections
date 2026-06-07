@@ -25,7 +25,7 @@ pub enum ArchiveError {
 pub struct Archive {
     puzzles: Vec<Puzzle>,
     by_date: HashMap<String, usize>, // date → index into puzzles
-    by_id: HashMap<u32, usize>,      // id → index into puzzles
+    by_id: HashMap<i64, usize>,      // id → index into puzzles
 }
 
 impl Archive {
@@ -61,7 +61,7 @@ impl Archive {
         let mut by_id = HashMap::with_capacity(puzzles.len());
         for (i, p) in puzzles.iter().enumerate() {
             by_date.insert(p.date.clone(), i);
-            by_id.insert(p.id, i);
+            by_id.insert(p.id.unwrap(), i);
         }
         Self {
             puzzles,
@@ -71,14 +71,14 @@ impl Archive {
     }
 
     /// Look up a puzzle by date ("YYYY-MM-DD") or numeric id (as a string, e.g. "512").
-    /// Tries date format first; falls back to parsing as u32 id.
+    /// Tries date format first; falls back to parsing as i64 id.
     pub fn get(&self, key: &str) -> Option<&Puzzle> {
         // Try as date first (most common case)
         if let Some(&i) = self.by_date.get(key) {
             return Some(&self.puzzles[i]);
         }
         // Fall back to numeric id
-        if let Ok(id) = key.parse::<u32>() {
+        if let Ok(id) = key.parse::<i64>() {
             return self.get_by_id(id);
         }
         None
@@ -88,7 +88,7 @@ impl Archive {
         self.by_date.get(date).map(|&i| &self.puzzles[i])
     }
 
-    pub fn get_by_id(&self, id: u32) -> Option<&Puzzle> {
+    pub fn get_by_id(&self, id: i64) -> Option<&Puzzle> {
         self.by_id.get(&id).map(|&i| &self.puzzles[i])
     }
 

@@ -158,7 +158,7 @@ fn print_puzzle_words(puzzle: &connections_core::puzzle::Puzzle) {
         .collect();
     cards.sort_by_key(|(_, pos)| *pos);
 
-    println!("NYT Connections #{} — {}", puzzle.id, puzzle.date);
+    println!("NYT Connections #{} — {}", puzzle.id.unwrap(), puzzle.date);
     for (word, pos) in &cards {
         println!("{:>2}. {word}", pos);
     }
@@ -212,7 +212,7 @@ async fn cmd_archive(output: PathBuf, since: String) {
 
         match fetch_puzzle_http(&date_str) {
             Ok(puzzle) => {
-                eprintln!("Fetched #{} — {}", puzzle.id, puzzle.date);
+                eprintln!("Fetched #{} — {}", puzzle.id.unwrap(), puzzle.date);
                 puzzles.push(puzzle);
                 fetched += 1;
             }
@@ -305,17 +305,19 @@ async fn cmd_user_archive(username: String, dir: PathBuf) {
 }
 
 async fn seed_nyt(pool: &SqlitePool, archive_path: &PathBuf) {
-    let archive = Archive::load(Some(archive_path.as_path())).await.unwrap_or_else(|e| {
-        eprintln!("Error loading {}: {e}", archive_path.display());
-        std::process::exit(1);
-    });
+    let archive = Archive::load(Some(archive_path.as_path()))
+        .await
+        .unwrap_or_else(|e| {
+            eprintln!("Error loading {}: {e}", archive_path.display());
+            std::process::exit(1);
+        });
 
     let source = PuzzleSource::Nytimes.to_string();
     let mut inserted = 0u32;
     let mut skipped = 0u32;
 
     for puzzle in archive.all() {
-        let ext_id = puzzle.id.to_string();
+        let ext_id = puzzle.id.unwrap().to_string();
 
         // Insert puzzle row; skip if already present.
         let result = sqlx::query(
@@ -419,9 +421,7 @@ async fn seed_community(pool: &SqlitePool, username: &str, users_dir: &PathBuf) 
         inserted += 1;
     }
 
-    eprintln!(
-        "{username}: inserted {inserted} new games, skipped {skipped} already present."
-    );
+    eprintln!("{username}: inserted {inserted} new games, skipped {skipped} already present.");
 }
 
 async fn cmd_seed(db: PathBuf, archive: PathBuf, users: Vec<String>, users_dir: PathBuf) {
@@ -457,8 +457,11 @@ async fn main() {
         Command::Json { date } => cmd_json(date),
         Command::Archive { output, since } => cmd_archive(output, since).await,
         Command::UserArchive { username, dir } => cmd_user_archive(username, dir).await,
-        Command::Seed { db, archive, users, users_dir } => {
-            cmd_seed(db, archive, users, users_dir).await
-        }
+        Command::Seed {
+            db,
+            archive,
+            users,
+            users_dir,
+        } => cmd_seed(db, archive, users, users_dir).await,
     }
 }

@@ -1,6 +1,7 @@
 use crate::AppState;
 use axum::extract::Path;
 use chrono;
+use connections_core::puzzle::{Card, Category, NytPuzzle};
 use maud::{DOCTYPE, Markup, html};
 
 // From gemini
@@ -44,10 +45,70 @@ fn word_box(word: &str, selected: bool, game_id_or_date: &str) -> Markup {
     }
 }
 
+async fn get_puzzle(state: &AppState, date: &str) -> Option<NytPuzzle> {
+    let puzzle = sqlx::query!(
+        "SELECT id, external_id, author, date, name FROM puzzles
+           WHERE source = 'nytimes' AND date LIKE ?",
+        date
+    )
+    .fetch_optional(&state.db)
+    .await
+    .expect("failed to fetch puzzle");
+
+    if puzzle.is_none() {
+        return None;
+    }
+
+    let puzzle = puzzle.unwrap();
+
+    let rows = sqlx::query!(
+        "SELECT c.id as category_id, c.title, c.position,
+                ca.id as card_id, ca.content, ca.image_url, ca.image_alt, ca.position as card_position
+         FROM categories c
+         LEFT JOIN cards ca ON ca.category_id = c.id
+         WHERE c.puzzle_id = ?
+         ORDER BY c.position, ca.position",
+        puzzle.id
+    )
+    .fetch_all(&state.db)
+    .await
+    .expect("failed to fetch puzzle data");
+
+    let mut categories: std::collections::HashMap<i64, Category> = std::collections::HashMap::new();
+
+    for row in rows {
+        categories
+            // TODO: unwrap bad here?
+            .entry(row.category_id.unwrap())
+            .or_insert_with(|| Category {
+                title: row.title.clone(),
+                cards: Vec::new(),
+            })
+            .cards
+            .push(Card {
+                content: row.content,
+                image_url: row.image_url,
+                image_alt_text: row.image_alt,
+                position: row.card_position as u8,
+            });
+    }
+
+    let categories = categories.into_values().collect::<Vec<_>>();
+
+    Some(NytPuzzle {
+        id: puzzle.id,
+        editor: puzzle.author,
+        categories: categories,
+        // TODO: safe to unwrap here?
+        date: puzzle.date.unwrap(),
+    })
+}
+
 pub async fn game(state: AppState, id_or_date: Option<String>) -> Markup {
     let today = chrono::Local::now().format("%Y-%m-%d").to_string();
     let id_or_date = id_or_date.unwrap_or(today);
-    let puzzle = state.archive.get(&id_or_date);
+    // let puzzle = state.archive.get(&id_or_date);
+    let puzzle = get_puzzle(&state, &id_or_date).await;
     if puzzle.is_none() {
         return html! { h1 { "Puzzle not found!" } };
     }

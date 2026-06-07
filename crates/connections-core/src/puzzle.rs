@@ -35,7 +35,7 @@ impl FromStr for PuzzleSource {
 pub struct Puzzle {
     #[serde(default)]
     pub date: String,
-    pub id: u32,
+    pub id: Option<i64>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub editor: Option<String>,
     pub categories: Vec<Category>,
@@ -44,10 +44,12 @@ pub struct Puzzle {
 /// Raw NYT API response shape (not stored; mapped into Puzzle on fetch).
 #[derive(Deserialize)]
 pub struct NytPuzzle {
-    pub id: u32,
+    pub id: Option<i64>,
     #[serde(default)]
     pub editor: Option<String>,
     pub categories: Vec<Category>,
+    #[serde(default)]
+    pub date: String,
 }
 
 #[derive(Deserialize, Serialize, Clone, Debug)]
@@ -98,7 +100,7 @@ pub struct CommunityGame {
     #[serde(rename = "createdAt")]
     pub created_at: String,
     #[serde(rename = "attemptedPlays")]
-    pub attempted_plays: u32,
+    pub attempted_plays: u64,
     /// None until decryption is implemented.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub categories: Option<Vec<Category>>,
