@@ -2,7 +2,7 @@ name: Build, Push, and Deploy connections
 
 on:
   push:
-    branches: ["master"]
+    branches: ["main"]
 
 jobs:
   build:
