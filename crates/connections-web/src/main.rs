@@ -4,16 +4,13 @@ use axum::{
     routing::{delete, get, put},
 };
 use connections_core::archive::Archive;
-use connections_web::{deselect_word, game, select_word};
+use connections_web::{AppState, deselect_word, game, select_word};
 use listenfd::ListenFd;
 use sqlx::sqlite::SqlitePoolOptions;
 use std::path::PathBuf;
 use std::sync::Arc;
 
 mod middleware;
-mod state;
-
-use state::AppState;
 
 /// Resolve a path relative to the workspace root (two levels up from this crate).
 /// Works regardless of the current working directory when the binary is invoked.
@@ -28,11 +25,11 @@ async fn human_play_page(
     State(state): State<AppState>,
     Path(id_or_date): Path<String>,
 ) -> maud::Markup {
-    game(state.archive, Some(id_or_date)).await
+    game(state, Some(id_or_date)).await
 }
 
 async fn home_page(State(state): State<AppState>) -> maud::Markup {
-    game(state.archive, None).await
+    game(state, None).await
 }
 
 #[tokio::main]

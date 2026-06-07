@@ -1,6 +1,6 @@
+use crate::AppState;
 use axum::extract::Path;
 use chrono;
-use connections_core::archive::SharedArchive;
 use maud::{DOCTYPE, Markup, html};
 
 // From gemini
@@ -44,10 +44,10 @@ fn word_box(word: &str, selected: bool, game_id_or_date: &str) -> Markup {
     }
 }
 
-pub async fn game(archive: SharedArchive, id_or_date: Option<String>) -> Markup {
+pub async fn game(state: AppState, id_or_date: Option<String>) -> Markup {
     let today = chrono::Local::now().format("%Y-%m-%d").to_string();
     let id_or_date = id_or_date.unwrap_or(today);
-    let puzzle = archive.get(&id_or_date);
+    let puzzle = state.archive.get(&id_or_date);
     if puzzle.is_none() {
         return html! { h1 { "Puzzle not found!" } };
     }

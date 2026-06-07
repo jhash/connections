@@ -1,8 +1,12 @@
-use axum::{extract::{Request, State}, middleware::Next, response::IntoResponse};
+use axum::{
+    extract::{Request, State},
+    middleware::Next,
+    response::IntoResponse,
+};
 use axum_extra::extract::cookie::{Cookie, CookieJar, SameSite};
 use uuid::Uuid;
 
-use crate::state::AppState;
+use crate::AppState;
 
 /// Injected into request extensions so handlers can read the session id.
 #[derive(Clone, Debug)]
