@@ -232,6 +232,23 @@ async fn get_puzzle(state: &AppState, date: &str) -> Option<NytPuzzle> {
     })
 }
 
+fn game_actions(game_state: &GameState, swap: bool) -> Markup {
+    let submit_disabled = game_state.selected.count() < 4;
+    let deselect_all_disabled = game_state.selected.count() == 0;
+    let swap_oob = if swap { "true" } else { "false" };
+
+    html! {
+        #game-actions.game-actions hx-swap-oob=(swap_oob) {
+            button.game-button disabled[deselect_all_disabled] {
+                "Deselect All"
+            }
+            button.game-button disabled[submit_disabled] {
+                "Submit"
+            }
+        }
+    }
+}
+
 pub async fn game_page(state: AppState, id_or_date: Option<String>, session_id: String) -> Markup {
     let today = chrono::Local::now().format("%Y-%m-%d").to_string();
     let id_or_date = id_or_date.unwrap_or(today);
@@ -252,6 +269,7 @@ pub async fn game_page(state: AppState, id_or_date: Option<String>, session_id: 
 
     let game_state = find_or_create_game_state(&state, &session_id, &puzzle.id.unwrap()).await;
     let lives = game_state.lives;
+    let actions = game_actions(&game_state, false);
 
     html! {
         (DOCTYPE)
@@ -269,6 +287,10 @@ pub async fn game_page(state: AppState, id_or_date: Option<String>, session_id: 
                 display: flex;
                 flex-direction: column;
             }
+            h1, h2, h3, h4, h5, h6 {
+                margin: 0;
+                padding: 0;
+            }
             .game-container {
                 display: flex;
                 flex-direction: column;
@@ -279,12 +301,14 @@ pub async fn game_page(state: AppState, id_or_date: Option<String>, session_id: 
                 width: 100%;
                 flex-grow: 1;
                 padding-bottom: 12rem;
+                gap: 2rem;
             }
             .word-grid {
                 display: grid;
                 grid-template-columns: repeat(4, 1fr);
                 gap: 0.5rem;
                 max-width: 100%;
+                padding: 0 0.5rem;
             }
             .word {
                 background: #E5E4E2;
@@ -316,6 +340,28 @@ pub async fn game_page(state: AppState, id_or_date: Option<String>, session_id: 
                 background: #555555;
                 color: white;
             }
+            .game-actions {
+                display: flex;
+                gap: 0.75rem;
+            }
+            .game-button {
+                background: white;
+                border: 1px solid black;
+                padding: 0 1rem;
+                font-size: 0.875rem;
+                font-weight: 600;
+                min-width: 5.5rem;
+                max-width: 80vw;
+                height: 3rem;
+                cursor: pointer;
+                border-radius: 32px;
+                line-height: 1.5em;
+            }
+            .game-button[disabled] {
+                background: #fff;
+                color: #8b8b8b;
+                border-color: #979797;
+            }
             "
         }
         script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.10/dist/htmx.min.js"
@@ -329,6 +375,7 @@ pub async fn game_page(state: AppState, id_or_date: Option<String>, session_id: 
                     (word_box(&card.content.as_deref().unwrap(), game_state.selected.is_selected(card.position), &puzzle.id.unwrap(), &session_id, &card.id.unwrap()))
                 }
             }))
+            (actions)
         }
     }
 }
@@ -344,15 +391,33 @@ pub async fn select_word(
     }
     let card = card.unwrap();
     let mut game_state = find_or_create_game_state(&state, &session_id, &puzzle_id).await;
+    // TODO: need to "deselect" once solved
+    if game_state.selected.count() == 4 {
+        // TODO: shake
+        return word_box(
+            &card.content.as_deref().unwrap(),
+            false,
+            &puzzle_id,
+            &session_id,
+            &card.id.unwrap(),
+        );
+    }
+    // TODO: multi-select? I don't think NYT supports
     game_state.selected.select(card.position);
     save_selected(&state, &game_state).await;
-    word_box(
-        &card.content.as_deref().unwrap(),
-        true,
-        &puzzle_id,
-        &session_id,
-        &card.id.unwrap(),
-    )
+
+    let actions = game_actions(&game_state, true);
+
+    html! {
+        (actions)
+        (word_box(
+            &card.content.as_deref().unwrap(),
+            true,
+            &puzzle_id,
+            &session_id,
+            &card.id.unwrap(),
+        ))
+    }
 }
 
 pub async fn deselect_word(
@@ -363,11 +428,17 @@ pub async fn deselect_word(
     let mut game_state = find_or_create_game_state(&state, &session_id, &puzzle_id).await;
     game_state.selected.deselect(card.position);
     save_selected(&state, &game_state).await;
-    word_box(
-        &card.content.as_deref().unwrap(),
-        false,
-        &puzzle_id,
-        &session_id,
-        &card.id.unwrap(),
-    )
+
+    let actions = game_actions(&game_state, true);
+
+    html! {
+        (actions)
+        (word_box(
+            &card.content.as_deref().unwrap(),
+            false,
+            &puzzle_id,
+            &session_id,
+            &card.id.unwrap(),
+        ))
+    }
 }
