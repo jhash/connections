@@ -1,5 +1,283 @@
 [
   {
+    "date": "2026-06-22",
+    "id": 1181,
+    "editor": "Wyna Liu",
+    "categories": [
+      {
+        "title": "DOMINANT",
+        "cards": [
+          {
+            "content": "ALPHA",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 4,
+            "id": null
+          },
+          {
+            "content": "HEAD",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 3,
+            "id": null
+          },
+          {
+            "content": "LEAD",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 7,
+            "id": null
+          },
+          {
+            "content": "PRIMARY",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 9,
+            "id": null
+          }
+        ]
+      },
+      {
+        "title": "MULTIPLICATION INDICATORS",
+        "cards": [
+          {
+            "content": "BY",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 14,
+            "id": null
+          },
+          {
+            "content": "TIMES",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 8,
+            "id": null
+          },
+          {
+            "content": "X",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 6,
+            "id": null
+          },
+          {
+            "content": "●",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 11,
+            "id": null
+          }
+        ]
+      },
+      {
+        "title": "PRONUNCIATION DESCRIPTORS",
+        "cards": [
+          {
+            "content": "SHORT",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 12,
+            "id": null
+          },
+          {
+            "content": "SILENT",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 10,
+            "id": null
+          },
+          {
+            "content": "SOFT",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 5,
+            "id": null
+          },
+          {
+            "content": "STRESSED",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 0,
+            "id": null
+          }
+        ]
+      },
+      {
+        "title": "STARTING WITH EXPLOSIVE ONOMATOPOEIA",
+        "cards": [
+          {
+            "content": "BANGKOK",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 15,
+            "id": null
+          },
+          {
+            "content": "BOOMER",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 1,
+            "id": null
+          },
+          {
+            "content": "POPSICLE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 13,
+            "id": null
+          },
+          {
+            "content": "POWDER",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 2,
+            "id": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-06-21",
+    "id": 1186,
+    "editor": "Wyna Liu",
+    "categories": [
+      {
+        "title": "PRECIPITATION",
+        "cards": [
+          {
+            "content": "DRIZZLE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 14,
+            "id": null
+          },
+          {
+            "content": "RAIN",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 5,
+            "id": null
+          },
+          {
+            "content": "SHOWERS",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 12,
+            "id": null
+          },
+          {
+            "content": "SPRINKLES",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 11,
+            "id": null
+          }
+        ]
+      },
+      {
+        "title": "BOWLS OVER",
+        "cards": [
+          {
+            "content": "FLOORS",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 7,
+            "id": null
+          },
+          {
+            "content": "ROCKS",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 1,
+            "id": null
+          },
+          {
+            "content": "STUNS",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 10,
+            "id": null
+          },
+          {
+            "content": "SURPRISES",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 4,
+            "id": null
+          }
+        ]
+      },
+      {
+        "title": "NBC SITCOMS",
+        "cards": [
+          {
+            "content": "COMMUNITY",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 9,
+            "id": null
+          },
+          {
+            "content": "FRIENDS",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 15,
+            "id": null
+          },
+          {
+            "content": "SCRUBS",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 3,
+            "id": null
+          },
+          {
+            "content": "WINGS",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 13,
+            "id": null
+          }
+        ]
+      },
+      {
+        "title": "STARTING WITH KINDS OF INSULTS",
+        "cards": [
+          {
+            "content": "BARBADOS",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 8,
+            "id": null
+          },
+          {
+            "content": "DIGGITY",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 0,
+            "id": null
+          },
+          {
+            "content": "DISSECT",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 6,
+            "id": null
+          },
+          {
+            "content": "SLAPDASH",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 2,
+            "id": null
+          }
+        ]
+      }
+    ]
+  },
+  {
     "date": "2026-06-20",
     "id": 1203,
     "editor": "Wyna Liu",
