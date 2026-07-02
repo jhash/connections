@@ -1,5 +1,144 @@
 [
   {
+    "date": "2026-07-02",
+    "id": 1190,
+    "editor": "Wyna Liu",
+    "categories": [
+      {
+        "title": "THEY IMPERSONATE OTHER THINGS",
+        "cards": [
+          {
+            "content": "COPYCAT",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 11,
+            "id": null
+          },
+          {
+            "content": "MIME",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 4,
+            "id": null
+          },
+          {
+            "content": "MOCKINGBIRD",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 0,
+            "id": null
+          },
+          {
+            "content": "T-1000",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 14,
+            "id": null
+          }
+        ]
+      },
+      {
+        "title": "OLD-TIMEY NAMES FOR THINGS WE STILL USE",
+        "cards": [
+          {
+            "content": "LOOKING GLASS",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 5,
+            "id": null
+          },
+          {
+            "content": "SPECTACLES",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 9,
+            "id": null
+          },
+          {
+            "content": "TALKIE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 12,
+            "id": null
+          },
+          {
+            "content": "WATER CLOSET",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 15,
+            "id": null
+          }
+        ]
+      },
+      {
+        "title": "STARTING WITH NICKNAMES",
+        "cards": [
+          {
+            "content": "BILLY GOAT",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 7,
+            "id": null
+          },
+          {
+            "content": "DAN DAN NOODLES",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 10,
+            "id": null
+          },
+          {
+            "content": "RICH TEXT",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 13,
+            "id": null
+          },
+          {
+            "content": "TOM-TOM",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 2,
+            "id": null
+          }
+        ]
+      },
+      {
+        "title": "STARTING WITH SPORTS VENUES",
+        "cards": [
+          {
+            "content": "COURT JESTER",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 3,
+            "id": null
+          },
+          {
+            "content": "DIAMOND RING",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 8,
+            "id": null
+          },
+          {
+            "content": "FIELD MOUSE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 1,
+            "id": null
+          },
+          {
+            "content": "TRACK RECORD",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 6,
+            "id": null
+          }
+        ]
+      }
+    ]
+  },
+  {
     "date": "2026-07-01",
     "id": 1192,
     "editor": "Wyna Liu",
