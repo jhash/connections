@@ -82,4 +82,4 @@ jobs:
           ssh -o StrictHostKeyChecking=accept-new \
             -i ~/.ssh/id_ci \
             deploy@${{ secrets.OCI_SERVER_IP }} \
-'docker service update --image jhash14/connections-archiver:latest connections_archiver'
+            'docker service update --image jhash14/connections-archiver:latest connections_archiver'
