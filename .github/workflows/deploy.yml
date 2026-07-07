@@ -41,6 +41,32 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
+            jhash14/connections-web:latest
+            jhash14/connections-web:${{ github.sha }}
+          cache-from: type=local,src=/home/jakehash/.cache/buildx/connections
+          cache-to: type=local,dest=/home/jakehash/.cache/buildx/connections-new,mode=max
+
+      - name: Rotate build cache
+        run: |
+          rm -rf /home/jakehash/.cache/buildx/connections
+          mv /home/jakehash/.cache/buildx/connections-new /home/jakehash/.cache/buildx/connections
+
+      - name: Deploy web to swarm (oci)
+        run: |
+          ssh -o StrictHostKeyChecking=accept-new \
+            -i ~/.ssh/id_ci \
+            deploy@${{ secrets.OCI_SERVER_IP }} \
+            'docker service update --image jhash14/connections-web:latest connections_web'
+
+      - name: Build and push archiver
+        uses: docker/build-push-action@v6
+        with:
+          builder: connectionsbuilder
+          context: .
+          file: Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
             jhash14/connections:latest
             jhash14/connections:${{ github.sha }}
           cache-from: type=local,src=/home/jakehash/.cache/buildx/connections
@@ -51,9 +77,9 @@ jobs:
           rm -rf /home/jakehash/.cache/buildx/connections
           mv /home/jakehash/.cache/buildx/connections-new /home/jakehash/.cache/buildx/connections
 
-      - name: Deploy to swarm (oci)
+      - name: Deploy archiver to swarm (oci)
         run: |
           ssh -o StrictHostKeyChecking=accept-new \
             -i ~/.ssh/id_ci \
             deploy@${{ secrets.OCI_SERVER_IP }} \
-            'docker service update --image jhash14/connections-web:latest connections_web'
+            'docker service update --image jhash14/connections:latest connections_archiver'
