@@ -67,8 +67,8 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            jhash14/connections:latest
-            jhash14/connections:${{ github.sha }}
+            jhash14/connections-archiver:latest
+            jhash14/connections-archiver:${{ github.sha }}
           cache-from: type=local,src=/home/jakehash/.cache/buildx/connections
           cache-to: type=local,dest=/home/jakehash/.cache/buildx/connections-new,mode=max
 
@@ -82,4 +82,4 @@ jobs:
           ssh -o StrictHostKeyChecking=accept-new \
             -i ~/.ssh/id_ci \
             deploy@${{ secrets.OCI_SERVER_IP }} \
-            'docker service update --image jhash14/connections:latest connections_archiver'
+'docker service update --image jhash14/connections-archiver:latest connections_archiver'
