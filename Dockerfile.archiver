@@ -1,0 +1,54 @@
+# syntax=docker/dockerfile:1
+
+# ── Builder stage ───────────────────────────────────────────────────────
+FROM rust:1-slim AS builder
+WORKDIR /build
+
+# Install native build dependencies (pkg-config + OpenSSL headers)
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends pkg-config libssl-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# ----------------------------------------------------------------------
+# Only copy the crates needed for the archiver (connections-cli) and its core.
+# This keeps the build context small and avoids compiling the web crate.
+# ----------------------------------------------------------------------
+COPY Cargo.lock .
+COPY Cargo.toml .
+
+# Core library required by the CLI
+COPY crates/connections-core ./crates/connections-core
+
+# CLI – the archiver binary
+COPY crates/connections-cli ./crates/connections-cli
+
+# Additional assets needed at build time (migrations, .sqlx files)
+COPY .sqlx ./.sqlx
+COPY migrations ./migrations
+
+# Build only the archiver binary. Keep one job as requested.
+RUN cargo build --release -p connections-cli --jobs 1
+
+# ── Runtime stage ───────────────────────────────────────────────────────
+FROM debian:bookworm-slim
+
+# Install only the runtime‑only packages we need
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends git openssh-client ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Pull the compiled binary from the builder
+COPY --from=builder /build/target/release/connections /usr/local/bin/connections
+
+# Copy the cron‑style wrapper script and entrypoint (same as original image)
+COPY scripts/run-daily.sh /scripts/run-daily.sh
+COPY deploy/entrypoint.sh /entrypoint.sh
+RUN chmod +x /scripts/run-daily.sh /entrypoint.sh
+
+WORKDIR /repo
+ENV PROJECT_DIR=/repo
+ENV BINARY=/usr/local/bin/connections
+
+ENTRYPOINT ["/entrypoint.sh"]
+# Keep the same looping CMD as the original image so behaviour is unchanged.
+CMD ["sh", "-c", "while true; do /bin/bash /scripts/run-daily.sh; /usr/local/bin/connections seed --db /data/games.db --archive /repo/archive.json; sleep 3600; done"]
