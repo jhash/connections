@@ -63,7 +63,7 @@ jobs:
         with:
           builder: connectionsbuilder
           context: .
-file: Dockerfile.archiver
+          file: Dockerfile.archiver
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
