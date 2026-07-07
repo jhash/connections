@@ -13,8 +13,8 @@ RUN apt-get update \
 # Only copy the crates needed for the archiver (connections-cli) and its core.
 # This keeps the build context small and avoids compiling the web crate.
 # ----------------------------------------------------------------------
+COPY Cargo.archiver.toml Cargo.toml
 COPY Cargo.lock .
-COPY Cargo.toml .
 
 # Core library required by the CLI
 COPY crates/connections-core ./crates/connections-core
