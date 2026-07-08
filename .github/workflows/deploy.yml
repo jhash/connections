@@ -69,12 +69,16 @@ jobs:
         run: cargo install cross
 
       - name: Cross-compile archiver (amd64)
+        env:
+          CROSS_POST_BUILD: apt-get update && apt-get install -y libssl-dev pkg-config
         run: |
           cross build --release -p connections-cli --target x86_64-unknown-linux-gnu
           mkdir -p bin/amd64
           cp target/x86_64-unknown-linux-gnu/release/connections bin/amd64/connections
 
       - name: Cross-compile archiver (arm64)
+        env:
+          CROSS_POST_BUILD: apt-get update && apt-get install -y libssl-dev pkg-config
         run: |
           cross build --release -p connections-cli --target aarch64-unknown-linux-gnu
           mkdir -p bin/arm64
