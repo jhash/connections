@@ -56,6 +56,7 @@ pub struct NytPuzzle {
 pub struct Category {
     pub title: String,
     pub cards: Vec<Card>,
+    pub position: Option<u8>,
 }
 
 #[derive(Deserialize, Serialize, Clone, Debug)]

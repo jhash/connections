@@ -230,6 +230,7 @@ async fn get_puzzle(state: &AppState, date: &str) -> Option<NytPuzzle> {
             .or_insert_with(|| Category {
                 title: row.title.clone(),
                 cards: Vec::new(),
+                position: Some(row.position as u8),
             })
             .cards
             .push(Card {
@@ -271,7 +272,7 @@ fn game_actions(game_state: &GameState, swap: bool, puzzle_id: i64, session_id: 
         &puzzle_id.to_string(),
         "sessions",
         session_id,
-        "guess",
+        "guesses",
     ]
     .join("/");
 
@@ -283,16 +284,18 @@ fn game_actions(game_state: &GameState, swap: bool, puzzle_id: i64, session_id: 
     }
 }
 
-pub async fn game_page(state: AppState, id_or_date: Option<String>, session_id: String) -> Markup {
-    let today = chrono::Local::now().format("%Y-%m-%d").to_string();
-    let id_or_date = id_or_date.unwrap_or(today);
-    // let puzzle = state.archive.get(&id_or_date);
-    let puzzle = get_puzzle(&state, &id_or_date).await;
-    if puzzle.is_none() {
-        return html! { h1 { "Puzzle not found!" } };
-    }
-    let puzzle = puzzle.expect("puzzle is none even though we checked above");
+async fn game_container(
+    state: &AppState,
+    game_state: &GameState,
+    puzzle: &NytPuzzle,
+    session_id: &str,
+    swap: bool,
+) -> Markup {
+    let swap_oob = if swap { "true" } else { "false" };
+
     let title = puzzle.date.to_string();
+    let lives = game_state.lives;
+
     let mut cards = puzzle
         .categories
         .iter()
@@ -300,9 +303,6 @@ pub async fn game_page(state: AppState, id_or_date: Option<String>, session_id: 
         .collect::<Vec<_>>();
 
     cards.sort_by(|a, b| a.position.cmp(&b.position));
-
-    let game_state = find_or_create_game_state(&state, &session_id, &puzzle.id.unwrap()).await;
-    let lives = game_state.lives;
 
     // Fetch solved categories for this game state
     let solved_rows = sqlx::query!(
@@ -327,7 +327,7 @@ pub async fn game_page(state: AppState, id_or_date: Option<String>, session_id: 
     if game_over {
         // Add all categories' tiles to solved_map
         for (idx, category) in puzzle.categories.iter().enumerate() {
-            let cat_pos = idx as u8;
+            let cat_pos = category.position.unwrap_or(idx as u8);
             let title = category.title.clone();
             for card in &category.cards {
                 all_solved_map.insert(card.position, (cat_pos, title.clone()));
@@ -335,7 +335,49 @@ pub async fn game_page(state: AppState, id_or_date: Option<String>, session_id: 
         }
     }
 
-    let actions = game_actions(&game_state, false, puzzle.id.unwrap(), &session_id);
+    let cards = cards
+        .into_iter()
+        .filter(|card| !solved_map.contains_key(&card.position));
+
+    let actions = game_actions(&game_state, swap, puzzle.id.unwrap(), &session_id);
+
+    html! {
+        #game-container.game-container hx-swap-oob=(swap_oob) {
+            h1 { (title) }
+            h5 { ("Lives: ")(lives) }
+            (word_grid(html! {
+                @if game_over {
+                    div.game-over { "Game Over! All categories revealed." }
+                }
+                @for card in cards {
+                    @let card_pos = card.position;
+                    @let solved = all_solved_map.get(&card_pos);
+                    (word_box(
+                        &card.content.as_deref().unwrap(),
+                        game_state.selected.is_selected(card_pos),
+                        &puzzle.id.unwrap(),
+                        &session_id,
+                        &card.id.unwrap(),
+                        solved.map(|&(cat_pos, ref title)| (cat_pos, title.as_str()))
+                    ))
+                }
+            }))
+            (actions)
+        }
+    }
+}
+
+pub async fn game_page(state: AppState, id_or_date: Option<String>, session_id: String) -> Markup {
+    let today = chrono::Local::now().format("%Y-%m-%d").to_string();
+    let id_or_date = id_or_date.unwrap_or(today);
+    // let puzzle = state.archive.get(&id_or_date);
+    let puzzle = get_puzzle(&state, &id_or_date).await;
+    if puzzle.is_none() {
+        return html! { h1 { "Puzzle not found!" } };
+    }
+
+    let puzzle = puzzle.expect("puzzle is none even though we checked above");
+    let game_state = find_or_create_game_state(&state, &session_id, &puzzle.id.unwrap()).await;
 
     html! {
         (DOCTYPE)
@@ -406,10 +448,10 @@ pub async fn game_page(state: AppState, id_or_date: Option<String>, session_id: 
                 background: #5a594e;
                 color: white;
             }
-            .solved-0 { background: #FFF9C4; }
-            .solved-1 { background: #C8E6C9; }
-            .solved-2 { background: #BBDEFB; }
-            .solved-3 { background: #E1BEE7; }
+            .solved-0 { background: #f9df6d; }
+            .solved-1 { background: #a0c35a; }
+            .solved-2 { background: #b0c4ef; }
+            .solved-3 { background: #ba81c5; }
             .game-actions {
                 display: flex;
                 gap: 0.75rem;
@@ -445,28 +487,13 @@ pub async fn game_page(state: AppState, id_or_date: Option<String>, session_id: 
         script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.10/dist/htmx.min.js"
             integrity="sha384-H5SrcfygHmAuTDZphMHqBJLc3FhssKjG7w/CeCpFReSfwBWDTKpkzPP8c+cLsK+V"
             crossorigin="anonymous" {}
-        .game-container {
-            h1 { (title) }
-            h5 { ("Lives: ")(lives) }
-            (word_grid(html! {
-                @if game_over {
-                    div.game-over { "Game Over! All categories revealed." }
-                }
-                @for card in cards {
-                    @let card_pos = card.position;
-                    @let solved = all_solved_map.get(&card_pos);
-                    (word_box(
-                        &card.content.as_deref().unwrap(),
-                        game_state.selected.is_selected(card_pos),
-                        &puzzle.id.unwrap(),
-                        &session_id,
-                        &card.id.unwrap(),
-                        solved.map(|&(cat_pos, ref title)| (cat_pos, title.as_str()))
-                    ))
-                }
-            }))
-            (actions)
-        }
+        (game_container(
+            &state,
+            &game_state,
+            &puzzle,
+            &session_id,
+            false,
+        ).await)
     }
 }
 
@@ -555,11 +582,11 @@ pub async fn submit_guess(
     State(state): State<AppState>,
     Path((puzzle_id, session_id)): Path<(i64, String)>,
 ) -> Markup {
-    let mut game_state = find_or_create_game_state(&state, &session_id, &puzzle_id).await;
     let puzzle = match get_puzzle_by_id(&state, puzzle_id).await {
         Some(puzzle) => puzzle,
         None => return html! { h1 { "Puzzle not found!" } },
     };
+    let mut game_state = find_or_create_game_state(&state, &session_id, &puzzle_id).await;
 
     let selected_mask = game_state.selected.as_u16();
     let mut selected_positions = Vec::new();
@@ -675,7 +702,7 @@ pub async fn submit_guess(
         .expect("failed to insert wrong guess");
 
         sqlx::query!(
-            "UPDATE game_states SET lives = ?, selected_mask = 0 WHERE id = ?",
+            "UPDATE game_states SET lives = ? WHERE id = ?",
             game_state.lives,
             game_state.id
         )
@@ -684,7 +711,7 @@ pub async fn submit_guess(
         .expect("failed to update game state");
     }
 
-    game_page(state, Some(puzzle.date.clone()), session_id).await
+    game_container(&state, &game_state, &puzzle, &session_id, true).await
 }
 
 async fn get_puzzle_by_id(state: &AppState, puzzle_id: i64) -> Option<NytPuzzle> {
@@ -723,6 +750,7 @@ async fn get_puzzle_by_id(state: &AppState, puzzle_id: i64) -> Option<NytPuzzle>
             .or_insert_with(|| Category {
                 title: row.title.clone(),
                 cards: Vec::new(),
+                position: Some(row.position as u8),
             })
             .cards
             .push(Card {

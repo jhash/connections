@@ -4,7 +4,9 @@ use axum::{
     routing::{delete, get, put},
 };
 use connections_core::archive::Archive;
-use connections_web::{AppState, deselect_all, deselect_word, game_page, select_word, submit_guess};
+use connections_web::{
+    AppState, deselect_all, deselect_word, game_page, select_word, submit_guess,
+};
 use listenfd::ListenFd;
 use sqlx::sqlite::SqlitePoolOptions;
 use std::path::PathBuf;
@@ -77,26 +79,26 @@ async fn main() {
     let session_routes = Router::new()
         .route("/", get(home_page))
         .route("/{id_or_date}", get(human_play_page))
-    .route(
-        "/api/puzzles/{puzzle_id}/sessions/{session_id}/selected_cards/{card_id}",
-        put(select_word),
-    )
-    .route(
-        "/api/puzzles/{puzzle_id}/sessions/{session_id}/selected_cards/{card_id}",
-        delete(deselect_word),
-    )
-    .route(
-        "/api/puzzles/{puzzle_id}/sessions/{session_id}/selected_cards",
-        delete(deselect_all),
-    )
-    .route(
-        "/api/puzzles/{puzzle_id}/sessions/{session_id}/guess",
-        axum::routing::post(submit_guess),
-    )
-    .route_layer(axum::middleware::from_fn_with_state(
-        state.clone(),
-        self::middleware::session_middleware,
-    ));
+        .route(
+            "/api/puzzles/{puzzle_id}/sessions/{session_id}/selected_cards/{card_id}",
+            put(select_word),
+        )
+        .route(
+            "/api/puzzles/{puzzle_id}/sessions/{session_id}/selected_cards/{card_id}",
+            delete(deselect_word),
+        )
+        .route(
+            "/api/puzzles/{puzzle_id}/sessions/{session_id}/selected_cards",
+            delete(deselect_all),
+        )
+        .route(
+            "/api/puzzles/{puzzle_id}/sessions/{session_id}/guesses",
+            axum::routing::post(submit_guess),
+        )
+        .route_layer(axum::middleware::from_fn_with_state(
+            state.clone(),
+            self::middleware::session_middleware,
+        ));
 
     let app = Router::new()
         .route("/health", get(|| async { "ok" }))
