@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO guesses (game_state_id, turn, card_id_1, card_id_2, card_id_3, card_id_4, result)\n             VALUES (?, ?, ?, ?, ?, ?, 'wrong')",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 6
+    },
+    "nullable": []
+  },
+  "hash": "b75ed90857e2077d53f6e4c853bf4ba9239ed5b541643008e91660902df7a194"
+}

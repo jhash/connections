@@ -1,0 +1,32 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT c.position as cat_pos, ca.position as tile_pos, c.title\n         FROM solved_categories sc\n         JOIN categories c ON sc.category_id = c.id\n         JOIN cards ca ON ca.category_id = c.id\n         WHERE sc.game_state_id = ?",
+  "describe": {
+    "columns": [
+      {
+        "name": "cat_pos",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "tile_pos",
+        "ordinal": 1,
+        "type_info": "Integer"
+      },
+      {
+        "name": "title",
+        "ordinal": 2,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "3e9d319e4028388e007da6c15921053aa6181f2a2abc967a8d91d7021e08754f"
+}

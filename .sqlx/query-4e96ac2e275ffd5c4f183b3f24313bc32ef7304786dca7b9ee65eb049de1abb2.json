@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "UPDATE game_states SET lives = ?, selected_mask = 0 WHERE id = ?",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "4e96ac2e275ffd5c4f183b3f24313bc32ef7304786dca7b9ee65eb049de1abb2"
+}

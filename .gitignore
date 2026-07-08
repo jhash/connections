@@ -8,3 +8,5 @@ intercept-crypto.js
 games.db
 games.db-shm
 games.db-wal
+
+server.log
