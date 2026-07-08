@@ -3,6 +3,7 @@ use axum::extract::{Path, State};
 use chrono;
 use connections_core::puzzle::{Card, Category, NytPuzzle};
 use maud::{DOCTYPE, Markup, html};
+use std::collections::HashMap;
 
 // From gemini
 #[allow(unused_macros)]
@@ -30,6 +31,7 @@ fn word_box(
     puzzle_id: &i64,
     session_id: &str,
     card_id: &i64,
+    solved: Option<(u8, &str)>,
 ) -> Markup {
     let update_path = vec![
         "api/puzzles",
@@ -40,13 +42,25 @@ fn word_box(
         &card_id.to_string(),
     ]
     .join("/");
+    let mut class = "word".to_string();
+    let mut title = None;
+    let mut disabled = false;
+
+    if let Some((cat_pos, cat_title)) = solved {
+        class = format!("{} solved-{}", class, cat_pos);
+        title = Some(cat_title.to_string());
+        disabled = true;
+    }
+
+    let _hx_attr = if selected { "hx-delete" } else { "hx-put" };
+
     html! {
-        @if selected {
-            button.word.selected hx-delete=(update_path) hx-swap="outerHTML" {
+        @if !disabled {
+            button class=(class.as_str()) hx-attr=(update_path) hx-swap="outerHTML" title=(title.unwrap_or_default()) {
                 (word)
             }
         } @else {
-            button.word hx-put=(update_path) hx-swap="outerHTML" {
+            div class=(class.as_str()) {
                 (word)
             }
         }
@@ -232,19 +246,15 @@ async fn get_puzzle(state: &AppState, date: &str) -> Option<NytPuzzle> {
     })
 }
 
-fn game_actions(game_state: &GameState, swap: bool) -> Markup {
+fn game_actions(game_state: &GameState, swap: bool, _puzzle_id: i64, _session_id: &str) -> Markup {
     let submit_disabled = game_state.selected.count() < 4;
     let deselect_all_disabled = game_state.selected.count() == 0;
     let swap_oob = if swap { "true" } else { "false" };
 
     html! {
         #game-actions.game-actions hx-swap-oob=(swap_oob) {
-            button.game-button disabled[deselect_all_disabled] {
-                "Deselect All"
-            }
-            button.game-button disabled[submit_disabled] {
-                "Submit"
-            }
+            button.game-button disabled[deselect_all_disabled] { "Deselect All" }
+            button.game-button disabled[submit_disabled] { "Submit" }
         }
     }
 }
@@ -269,7 +279,39 @@ pub async fn game_page(state: AppState, id_or_date: Option<String>, session_id: 
 
     let game_state = find_or_create_game_state(&state, &session_id, &puzzle.id.unwrap()).await;
     let lives = game_state.lives;
-    let actions = game_actions(&game_state, false);
+
+    // Fetch solved categories for this game state
+    let solved_rows = sqlx::query!(
+        "SELECT c.position as cat_pos, ca.position as tile_pos, c.title
+         FROM solved_categories sc
+         JOIN categories c ON sc.category_id = c.id
+         JOIN cards ca ON ca.category_id = c.id
+         WHERE sc.game_state_id = ?",
+        game_state.id
+    )
+    .fetch_all(&state.db)
+    .await
+    .unwrap_or_default();
+
+    let mut solved_map = HashMap::new();
+    for row in solved_rows {
+        solved_map.insert(row.tile_pos as u8, (row.cat_pos as u8, row.title));
+    }
+
+    let game_over = game_state.lives == 0;
+    let mut all_solved_map = solved_map.clone();
+    if game_over {
+        // Add all categories' tiles to solved_map
+        for (idx, category) in puzzle.categories.iter().enumerate() {
+            let cat_pos = idx as u8;
+            let title = category.title.clone();
+            for card in &category.cards {
+                all_solved_map.insert(card.position, (cat_pos, title.clone()));
+            }
+        }
+    }
+
+    let actions = game_actions(&game_state, false, puzzle.id.unwrap(), &session_id);
 
     html! {
         (DOCTYPE)
@@ -340,6 +382,10 @@ pub async fn game_page(state: AppState, id_or_date: Option<String>, session_id: 
                 background: #555555;
                 color: white;
             }
+            .solved-0 { background: #FFF9C4; }
+            .solved-1 { background: #C8E6C9; }
+            .solved-2 { background: #BBDEFB; }
+            .solved-3 { background: #E1BEE7; }
             .game-actions {
                 display: flex;
                 gap: 0.75rem;
@@ -362,6 +408,14 @@ pub async fn game_page(state: AppState, id_or_date: Option<String>, session_id: 
                 color: #8b8b8b;
                 border-color: #979797;
             }
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-8px); }
+                75% { transform: translateX(8px); }
+            }
+            .shake {
+                animation: shake 0.4s ease-in-out;
+            }
             "
         }
         script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.10/dist/htmx.min.js"
@@ -371,8 +425,20 @@ pub async fn game_page(state: AppState, id_or_date: Option<String>, session_id: 
             h1 { (title) }
             h5 { ("Lives: ")(lives) }
             (word_grid(html! {
+                @if game_over {
+                    div.game-over { "Game Over! All categories revealed." }
+                }
                 @for card in cards {
-                    (word_box(&card.content.as_deref().unwrap(), game_state.selected.is_selected(card.position), &puzzle.id.unwrap(), &session_id, &card.id.unwrap()))
+                    @let card_pos = card.position;
+                    @let solved = all_solved_map.get(&card_pos);
+                    (word_box(
+                        &card.content.as_deref().unwrap(),
+                        game_state.selected.is_selected(card_pos),
+                        &puzzle.id.unwrap(),
+                        &session_id,
+                        &card.id.unwrap(),
+                        solved.map(|&(cat_pos, ref title)| (cat_pos, title.as_str()))
+                    ))
                 }
             }))
             (actions)
@@ -400,13 +466,14 @@ pub async fn select_word(
             &puzzle_id,
             &session_id,
             &card.id.unwrap(),
+            None,
         );
     }
     // TODO: multi-select? I don't think NYT supports
     game_state.selected.select(card.position);
     save_selected(&state, &game_state).await;
 
-    let actions = game_actions(&game_state, true);
+    let actions = game_actions(&game_state, true, puzzle_id, &session_id);
 
     html! {
         (actions)
@@ -416,6 +483,7 @@ pub async fn select_word(
             &puzzle_id,
             &session_id,
             &card.id.unwrap(),
+            None,
         ))
     }
 }
@@ -429,7 +497,7 @@ pub async fn deselect_word(
     game_state.selected.deselect(card.position);
     save_selected(&state, &game_state).await;
 
-    let actions = game_actions(&game_state, true);
+    let actions = game_actions(&game_state, true, puzzle_id, &session_id);
 
     html! {
         (actions)
@@ -439,6 +507,194 @@ pub async fn deselect_word(
             &puzzle_id,
             &session_id,
             &card.id.unwrap(),
+            None,
         ))
     }
+}
+
+pub async fn submit_guess(
+    State(state): State<AppState>,
+    Path((puzzle_id, session_id)): Path<(i64, String)>,
+) -> Markup {
+    let mut game_state = find_or_create_game_state(&state, &session_id, &puzzle_id).await;
+    let puzzle = match get_puzzle_by_id(&state, puzzle_id).await {
+        Some(puzzle) => puzzle,
+        None => return html! { h1 { "Puzzle not found!" } },
+    };
+
+    let selected_mask = game_state.selected.as_u16();
+    let mut selected_positions = Vec::new();
+    for pos in 0..16 {
+        if (selected_mask >> pos) & 1 == 1 {
+            selected_positions.push(pos as u8);
+        }
+    }
+
+    if selected_positions.len() != 4 {
+        return game_page(state, Some(puzzle.date.clone()), session_id).await;
+    }
+
+    let mut cards_map = HashMap::new();
+    for category in &puzzle.categories {
+        for card in &category.cards {
+            cards_map.insert(card.position, card);
+        }
+    }
+
+    let mut selected_cards = Vec::new();
+    for &pos in &selected_positions {
+        if let Some(card) = cards_map.get(&pos) {
+            selected_cards.push(card);
+        } else {
+            return game_page(state, Some(puzzle.date.clone()), session_id).await;
+        }
+    }
+
+    let mut category_ids: Vec<i64> = selected_cards.iter()
+        .filter_map(|card| card.id)
+        .collect();
+    category_ids.sort();
+    let unique_cats = category_ids.windows(2).all(|w| w[0] == w[1]);
+    let correct_guess = unique_cats && category_ids.len() == 4;
+
+    if correct_guess {
+        let card_id = selected_cards[0].id.expect("Selected card must have an id");
+        let category_id = sqlx::query!("SELECT category_id FROM cards WHERE id = ?", card_id)
+            .fetch_one(&state.db)
+            .await
+            .expect("Failed to fetch category_id for card")
+            .category_id;
+
+        let turn = sqlx::query!(
+            "SELECT COUNT(*) as count FROM guesses WHERE game_state_id = ?",
+            game_state.id
+        )
+        .fetch_one(&state.db)
+        .await
+        .map(|row| row.count as i32 + 1)
+        .unwrap_or(1);
+
+        sqlx::query!(
+            "INSERT INTO guesses (game_state_id, turn, card_id_1, card_id_2, card_id_3, card_id_4, result)
+             VALUES (?, ?, ?, ?, ?, ?, 'correct')",
+            game_state.id,
+            turn,
+            selected_cards[0].id.unwrap(),
+            selected_cards[1].id.unwrap(),
+            selected_cards[2].id.unwrap(),
+            selected_cards[3].id.unwrap(),
+        )
+        .execute(&state.db)
+        .await
+        .expect("failed to insert correct guess");
+
+        sqlx::query!(
+            "INSERT INTO solved_categories (game_state_id, category_id, turn)
+             VALUES (?, ?, ?)",
+            game_state.id,
+            category_id,
+            turn,
+        )
+        .execute(&state.db)
+        .await
+        .expect("failed to insert solved category");
+
+        game_state.selected.clear();
+        save_selected(&state, &game_state).await;
+    } else {
+        if game_state.lives > 0 {
+            game_state.lives -= 1;
+        }
+
+        let turn = sqlx::query!(
+            "SELECT COUNT(*) as count FROM guesses WHERE game_state_id = ?",
+            game_state.id
+        )
+        .fetch_one(&state.db)
+        .await
+        .map(|row| row.count as i32 + 1)
+        .unwrap_or(1);
+
+        sqlx::query!(
+            "INSERT INTO guesses (game_state_id, turn, card_id_1, card_id_2, card_id_3, card_id_4, result)
+             VALUES (?, ?, ?, ?, ?, ?, 'wrong')",
+            game_state.id,
+            turn,
+            selected_cards[0].id.unwrap(),
+            selected_cards[1].id.unwrap(),
+            selected_cards[2].id.unwrap(),
+            selected_cards[3].id.unwrap(),
+        )
+        .execute(&state.db)
+        .await
+        .expect("failed to insert wrong guess");
+
+        sqlx::query!(
+            "UPDATE game_states SET lives = ?, selected_mask = 0 WHERE id = ?",
+            game_state.lives,
+            game_state.id
+        )
+        .execute(&state.db)
+        .await
+        .expect("failed to update game state");
+    }
+
+    game_page(state, Some(puzzle.date.clone()), session_id).await
+}
+
+async fn get_puzzle_by_id(state: &AppState, puzzle_id: i64) -> Option<NytPuzzle> {
+    let puzzle = sqlx::query!(
+        "SELECT id, external_id, author, date, name FROM puzzles WHERE id = ? AND source = 'nytimes'",
+        puzzle_id
+    )
+    .fetch_optional(&state.db)
+    .await
+    .expect("failed to fetch puzzle by id");
+
+    if puzzle.is_none() {
+        return None;
+    }
+
+    let puzzle = puzzle.unwrap();
+
+    let rows = sqlx::query!(
+        "SELECT c.id as category_id, c.title, c.position,
+                ca.id as card_id, ca.content, ca.image_url, ca.image_alt, ca.position as card_position
+         FROM categories c
+         LEFT JOIN cards ca ON ca.category_id = c.id
+         WHERE c.puzzle_id = ?
+         ORDER BY c.position, ca.position",
+        puzzle.id
+    )
+    .fetch_all(&state.db)
+    .await
+    .expect("failed to fetch puzzle data");
+
+    let mut categories: HashMap<i64, Category> = HashMap::new();
+
+    for row in rows {
+        categories
+            .entry(row.category_id.unwrap())
+            .or_insert_with(|| Category {
+                title: row.title.clone(),
+                cards: Vec::new(),
+            })
+            .cards
+            .push(Card {
+                id: row.card_id,
+                content: row.content,
+                image_url: row.image_url,
+                image_alt_text: row.image_alt,
+                position: row.card_position as u8,
+            });
+    }
+
+    let categories = categories.into_values().collect::<Vec<_>>();
+
+    Some(NytPuzzle {
+        id: puzzle.id,
+        editor: puzzle.author,
+        categories: categories,
+        date: puzzle.date.unwrap(),
+    })
 }
