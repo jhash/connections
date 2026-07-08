@@ -29,20 +29,26 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Ensure build cache dir exists
-        run: mkdir -p /home/jakehash/.cache/buildx/connections
-
       - name: Install Rust
         run: |
           if ! command -v cargo &> /dev/null; then
             curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
             echo "$HOME/.cargo/bin" >> $GITHUB_PATH
           fi
+          rustup target add x86_64-unknown-linux-gnu aarch64-unknown-linux-gnu
+          cargo install cross --locked
 
       - name: Update Cargo.lock
         run: cargo update
 
-      - name: Build and push
+      - name: Clear build cache
+        run: |
+          mkdir -p /home/jakehash/.cache/buildx/connections
+          mkdir -p /home/jakehash/.cache/buildx/connections-new
+          rm -rf /home/jakehash/.cache/buildx/connections/*
+          rm -rf /home/jakehash/.cache/buildx/connections-new/*
+
+      - name: Build and push web image
         uses: docker/build-push-action@v6
         with:
           builder: connectionsbuilder
@@ -68,27 +74,13 @@ jobs:
             deploy@${{ secrets.OCI_SERVER_IP }} \
             'docker service update --image jhash14/connections-web:latest connections_web'
 
-      - name: Install Rust (if needed)
-        run: |
-          if ! command -v cargo &> /dev/null; then
-            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-            echo "$HOME/.cargo/bin" >> $GITHUB_PATH
-          fi
-          rustup target add x86_64-unknown-linux-gnu aarch64-unknown-linux-gnu
-
-      - name: Install cross
-        run: |
-          if ! command -v cross &> /dev/null; then
-            cargo install cross --locked
-          fi
-
-      - name: Cross-compile archiver (amd64)
+      - name: Build archiver (amd64)
         run: |
           cross build --release -p connections-cli --target x86_64-unknown-linux-gnu
           mkdir -p bin/amd64
           cp target/x86_64-unknown-linux-gnu/release/connections bin/amd64/connections
 
-      - name: Cross-compile archiver (arm64)
+      - name: Build archiver (arm64)
         run: |
           cross build --release -p connections-cli --target aarch64-unknown-linux-gnu
           mkdir -p bin/arm64
