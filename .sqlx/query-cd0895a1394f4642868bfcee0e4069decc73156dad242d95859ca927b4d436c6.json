@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO solved_categories (game_state_id, category_id, turn)\n             VALUES (?, ?, ?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": []
+  },
+  "hash": "cd0895a1394f4642868bfcee0e4069decc73156dad242d95859ca927b4d436c6"
+}
