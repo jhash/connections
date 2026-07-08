@@ -26,7 +26,7 @@ Stack:
 | GET | `/` | Landing page — project intro, latest leaderboard snapshot, links |
 | GET | `/play` | Human game — today's puzzle by default |
 | GET | `/play?date=YYYY-MM-DD` | Specific puzzle |
-| POST | `/play/guess` | Submit guess → returns HTMX board fragment |
+| POST | `/play/guesses` | Submit guess → returns HTMX board fragment |
 | GET | `/agents` | Leaderboard — full model comparison table + charts |
 | GET | `/agents/:model` | Per-model detail — taxonomy breakdown, history |
 | GET | `/watch/:run_id` | Agent replay page (live or recorded) |
@@ -74,7 +74,7 @@ pub struct AppState {
 
 ### 2. Game session handling
 
-Session ID in a cookie. On `GET /play`: if no session, create new `GameState` for the requested date, store in `sessions` map. On `POST /play/guess`: look up session, call `game_state.submit_guess()`, return Maud-rendered board fragment.
+Session ID in a cookie. On `GET /play`: if no session, create new `GameState` for the requested date, store in `sessions` map. On `POST /play/guesses`: look up session, call `game_state.submit_guess()`, return Maud-rendered board fragment.
 
 For simplicity, sessions are in-memory with a 24h TTL. Acceptable tradeoff: users lose game state on server restart.
 

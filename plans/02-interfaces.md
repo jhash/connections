@@ -16,7 +16,7 @@ The game has simple, well-defined rules: 16 words, 4 groups of 4, 4 lives, diffi
 
 - **Shared core**: `crates/connections-core/` — `GameState`, validation, archive I/O. Both TUI and web are thin consumers.
 - **TUI**: [Ratatui](https://ratatui.rs/) — mature, actively maintained, good grid layout primitives.
-- **Web UI**: Axum + [Maud](https://maud.lambda.xyz/) (typed HTML macros) + HTMX. No JS framework. Guess submission is a `POST /play/guess` that returns an HTML fragment; HTMX swaps it in.
+- **Web UI**: Axum + [Maud](https://maud.lambda.xyz/) (typed HTML macros) + HTMX. No JS framework. Guess submission is a `POST /play/guesses` that returns an HTML fragment; HTMX swaps it in.
 - **Workspace layout**: convert repo to a Cargo workspace to cleanly split the crates.
 
 ---
@@ -97,7 +97,7 @@ Routes handled here (game logic only; full route list in Plan 08):
 
 ```
 GET  /play                    → render game board (date=today or ?date=YYYY-MM-DD)
-POST /play/guess              → submit guess, return HTMX board fragment
+POST /play/guesses              → submit guess, return HTMX board fragment
 GET  /play/random             → redirect to /play?date=<random archive date>
 ```
 
