@@ -73,7 +73,7 @@ jobs:
           ssh -o StrictHostKeyChecking=accept-new \
             -i ~/.ssh/id_ci \
             deploy@${{ secrets.OCI_SERVER_IP }} \
-            'docker service update --pull=always --image jhash14/connections-web:latest connections_web'
+            'docker service update --force --image jhash14/connections-web:latest connections_web'
 
       - name: Build archiver (amd64)
         run: |
@@ -121,4 +121,4 @@ jobs:
           ssh -o StrictHostKeyChecking=accept-new \
             -i ~/.ssh/id_ci \
             deploy@${{ secrets.OCI_SERVER_IP }} \
-            'docker service update --pull=always --image jhash14/connections-archiver:latest connections_archiver'
+            'docker service update --force --image jhash14/connections-archiver:latest connections_archiver'
