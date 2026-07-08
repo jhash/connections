@@ -50,14 +50,20 @@ fn word_box(
         class = format!("{} solved-{}", class, cat_pos);
         title = Some(cat_title.to_string());
         disabled = true;
+    } else if selected {
+        class = format!("{} selected", class);
     }
-
-    let _hx_attr = if selected { "hx-delete" } else { "hx-put" };
 
     html! {
         @if !disabled {
-            button class=(class.as_str()) hx-attr=(update_path) hx-swap="outerHTML" title=(title.unwrap_or_default()) {
-                (word)
+            @if selected {
+                button class=(class.as_str()) hx-delete=(update_path) hx-swap="outerHTML" title=(title.unwrap_or_default()) {
+                    (word)
+                }
+            } @else {
+                button class=(class.as_str()) hx-put=(update_path) hx-swap="outerHTML" title=(title.unwrap_or_default()) {
+                    (word)
+                }
             }
         } @else {
             div class=(class.as_str()) {
@@ -246,15 +252,33 @@ async fn get_puzzle(state: &AppState, date: &str) -> Option<NytPuzzle> {
     })
 }
 
-fn game_actions(game_state: &GameState, swap: bool, _puzzle_id: i64, _session_id: &str) -> Markup {
+fn game_actions(game_state: &GameState, swap: bool, puzzle_id: i64, session_id: &str) -> Markup {
     let submit_disabled = game_state.selected.count() < 4;
     let deselect_all_disabled = game_state.selected.count() == 0;
     let swap_oob = if swap { "true" } else { "false" };
 
+    let deselect_all_path = vec![
+        "api/puzzles",
+        &puzzle_id.to_string(),
+        "sessions",
+        session_id,
+        "selected_cards",
+    ]
+    .join("/");
+
+    let guess_path = vec![
+        "api/puzzles",
+        &puzzle_id.to_string(),
+        "sessions",
+        session_id,
+        "guess",
+    ]
+    .join("/");
+
     html! {
         #game-actions.game-actions hx-swap-oob=(swap_oob) {
-            button.game-button disabled[deselect_all_disabled] { "Deselect All" }
-            button.game-button disabled[submit_disabled] { "Submit" }
+            button.game-button.disabled[deselect_all_disabled] hx-delete=(deselect_all_path) hx-swap="outerHTML" { "Deselect All" }
+            button.game-button.disabled[submit_disabled] hx-post=(guess_path) hx-swap="outerHTML" { "Submit" }
         }
     }
 }
@@ -353,7 +377,7 @@ pub async fn game_page(state: AppState, id_or_date: Option<String>, session_id: 
                 padding: 0 0.5rem;
             }
             .word {
-                background: #E5E4E2;
+                background: #efefe6;
                 color: black;
                 border-radius: 5px;
                 width: 9.375rem;
@@ -379,7 +403,7 @@ pub async fn game_page(state: AppState, id_or_date: Option<String>, session_id: 
                 background: #D7D7D7;
             }
             .word.selected {
-                background: #555555;
+                background: #5a594e;
                 color: white;
             }
             .solved-0 { background: #FFF9C4; }
@@ -512,6 +536,21 @@ pub async fn deselect_word(
     }
 }
 
+pub async fn deselect_all(
+    State(state): State<AppState>,
+    Path((puzzle_id, session_id)): Path<(i64, String)>,
+) -> Markup {
+    let mut game_state = find_or_create_game_state(&state, &session_id, &puzzle_id).await;
+    game_state.selected.clear();
+    save_selected(&state, &game_state).await;
+
+    let actions = game_actions(&game_state, true, puzzle_id, &session_id);
+
+    html! {
+        (actions)
+    }
+}
+
 pub async fn submit_guess(
     State(state): State<AppState>,
     Path((puzzle_id, session_id)): Path<(i64, String)>,
@@ -550,9 +589,7 @@ pub async fn submit_guess(
         }
     }
 
-    let mut category_ids: Vec<i64> = selected_cards.iter()
-        .filter_map(|card| card.id)
-        .collect();
+    let mut category_ids: Vec<i64> = selected_cards.iter().filter_map(|card| card.id).collect();
     category_ids.sort();
     let unique_cats = category_ids.windows(2).all(|w| w[0] == w[1]);
     let correct_guess = unique_cats && category_ids.len() == 4;
@@ -574,15 +611,19 @@ pub async fn submit_guess(
         .map(|row| row.count as i32 + 1)
         .unwrap_or(1);
 
+        let c0 = selected_cards[0].id.unwrap();
+        let c1 = selected_cards[1].id.unwrap();
+        let c2 = selected_cards[2].id.unwrap();
+        let c3 = selected_cards[3].id.unwrap();
         sqlx::query!(
             "INSERT INTO guesses (game_state_id, turn, card_id_1, card_id_2, card_id_3, card_id_4, result)
              VALUES (?, ?, ?, ?, ?, ?, 'correct')",
             game_state.id,
             turn,
-            selected_cards[0].id.unwrap(),
-            selected_cards[1].id.unwrap(),
-            selected_cards[2].id.unwrap(),
-            selected_cards[3].id.unwrap(),
+            c0,
+            c1,
+            c2,
+            c3,
         )
         .execute(&state.db)
         .await
@@ -615,15 +656,19 @@ pub async fn submit_guess(
         .map(|row| row.count as i32 + 1)
         .unwrap_or(1);
 
+        let c0 = selected_cards[0].id.unwrap();
+        let c1 = selected_cards[1].id.unwrap();
+        let c2 = selected_cards[2].id.unwrap();
+        let c3 = selected_cards[3].id.unwrap();
         sqlx::query!(
             "INSERT INTO guesses (game_state_id, turn, card_id_1, card_id_2, card_id_3, card_id_4, result)
              VALUES (?, ?, ?, ?, ?, ?, 'wrong')",
             game_state.id,
             turn,
-            selected_cards[0].id.unwrap(),
-            selected_cards[1].id.unwrap(),
-            selected_cards[2].id.unwrap(),
-            selected_cards[3].id.unwrap(),
+            c0,
+            c1,
+            c2,
+            c3,
         )
         .execute(&state.db)
         .await
@@ -692,7 +737,7 @@ async fn get_puzzle_by_id(state: &AppState, puzzle_id: i64) -> Option<NytPuzzle>
     let categories = categories.into_values().collect::<Vec<_>>();
 
     Some(NytPuzzle {
-        id: puzzle.id,
+        id: Some(puzzle.id),
         editor: puzzle.author,
         categories: categories,
         date: puzzle.date.unwrap(),

@@ -4,7 +4,7 @@ use axum::{
     routing::{delete, get, put},
 };
 use connections_core::archive::Archive;
-use connections_web::{AppState, deselect_word, game_page, select_word, submit_guess};
+use connections_web::{AppState, deselect_all, deselect_word, game_page, select_word, submit_guess};
 use listenfd::ListenFd;
 use sqlx::sqlite::SqlitePoolOptions;
 use std::path::PathBuf;
@@ -84,6 +84,10 @@ async fn main() {
     .route(
         "/api/puzzles/{puzzle_id}/sessions/{session_id}/selected_cards/{card_id}",
         delete(deselect_word),
+    )
+    .route(
+        "/api/puzzles/{puzzle_id}/sessions/{session_id}/selected_cards",
+        delete(deselect_all),
     )
     .route(
         "/api/puzzles/{puzzle_id}/sessions/{session_id}/guess",
