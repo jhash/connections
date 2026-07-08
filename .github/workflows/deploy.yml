@@ -58,9 +58,6 @@ jobs:
             deploy@${{ secrets.OCI_SERVER_IP }} \
             'docker service update --image jhash14/connections-web:latest connections_web'
 
-      - name: Install OpenSSL development libraries
-        run: sudo apt-get update && sudo apt-get install -y libssl-dev pkg-config
-
       - name: Install Rust (if needed)
         run: |
           if ! command -v cargo &> /dev/null; then
