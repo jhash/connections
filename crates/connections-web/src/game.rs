@@ -638,6 +638,8 @@ pub async fn submit_guess(
         .map(|row| row.count as i32 + 1)
         .unwrap_or(1);
 
+        // TODO: bitmask instead of individual card ids? hard to query for previous guesses
+
         let c0 = selected_cards[0].id.unwrap();
         let c1 = selected_cards[1].id.unwrap();
         let c2 = selected_cards[2].id.unwrap();
@@ -682,6 +684,9 @@ pub async fn submit_guess(
         .await
         .map(|row| row.count as i32 + 1)
         .unwrap_or(1);
+
+        // TODO: one_away
+        // TODO: bitmask instead of individual card ids? hard to query for previous guesses
 
         let c0 = selected_cards[0].id.unwrap();
         let c1 = selected_cards[1].id.unwrap();
