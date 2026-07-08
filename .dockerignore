@@ -17,12 +17,6 @@ target
 .env
 .env.local
 
-# Ignore SQLx data directory
-.sqlx
-
-# Ignore Cargo cache
-Cargo.lock
-
 # Ignore node modules
 node_modules
 
