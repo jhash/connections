@@ -1,46 +1,22 @@
 # syntax=docker/dockerfile:1
 
-# ── Builder stage ───────────────────────────────────────────────────────
-FROM rust:1-slim AS builder
-WORKDIR /build
-
-# Install native build dependencies (pkg-config + OpenSSL headers)
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends pkg-config libssl-dev \
-    && rm -rf /var/lib/apt/lists/*
-
-# ----------------------------------------------------------------------
-# Only copy the crates needed for the archiver (connections-cli) and its core.
-# This keeps the build context small and avoids compiling the web crate.
-# ----------------------------------------------------------------------
-COPY Cargo.archiver.toml Cargo.toml
-COPY Cargo.lock .
-
-# Core library required by the CLI
-COPY crates/connections-core ./crates/connections-core
-
-# CLI – the archiver binary
-COPY crates/connections-cli ./crates/connections-cli
-
-# Additional assets needed at build time (migrations, .sqlx files)
-COPY .sqlx ./.sqlx
-COPY migrations ./migrations
-
-# Build only the archiver binary. Keep one job as requested.
-RUN cargo build --release -p connections-cli
-
 # ── Runtime stage ───────────────────────────────────────────────────────
+# No Rust build step - binaries are pre-built on the runner via cross.
 FROM debian:bookworm-slim
 
-# Install only the runtime‑only packages we need
+# Install only the runtime-only packages we need
 RUN apt-get update \
     && apt-get install -y --no-install-recommends git openssh-client ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# Pull the compiled binary from the builder
-COPY --from=builder /build/target/release/connections /usr/local/bin/connections
+# Select the right pre-built archiver binary for this platform
+ARG TARGETPLATFORM
+RUN case "$TARGETPLATFORM" in \
+      linux/arm64) cp bin/arm64/connections /usr/local/bin/connections ;; \
+      *)          cp bin/amd64/connections /usr/local/bin/connections ;; \
+    esac
 
-# Copy the cron‑style wrapper script and entrypoint (same as original image)
+# Copy the cron-style wrapper script and entrypoint
 COPY scripts/run-daily.sh /scripts/run-daily.sh
 COPY deploy/entrypoint.sh /entrypoint.sh
 RUN chmod +x /scripts/run-daily.sh /entrypoint.sh
