@@ -32,6 +32,9 @@ jobs:
       - name: Ensure build cache dir exists
         run: mkdir -p /home/jakehash/.cache/buildx/connections
 
+      - name: Update Cargo.lock
+        run: cargo update
+
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
@@ -72,19 +75,17 @@ jobs:
             cargo install cross --locked
           fi
 
-      - name: Build archiver (amd64)
+      - name: Cross-compile archiver (amd64)
         run: |
-          cargo build --release -p connections-cli --target x86_64-unknown-linux-gnu
+          cross build --release -p connections-cli --target x86_64-unknown-linux-gnu
           mkdir -p bin/amd64
           cp target/x86_64-unknown-linux-gnu/release/connections bin/amd64/connections
 
-      - name: Build archiver (arm64)
+      - name: Cross-compile archiver (arm64)
         run: |
-          cargo build --release -p connections-cli --target aarch64-unknown-linux-gnu
+          cross build --release -p connections-cli --target aarch64-unknown-linux-gnu
           mkdir -p bin/arm64
           cp target/aarch64-unknown-linux-gnu/release/connections bin/arm64/connections
-
-      - name: Build and push archiver
         uses: docker/build-push-action@v6
         with:
           builder: connectionsbuilder
