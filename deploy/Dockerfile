@@ -15,7 +15,7 @@ COPY crates/ ./crates/
 COPY migrations/ ./migrations/
 COPY .sqlx/ ./.sqlx/
 ENV SQLX_OFFLINE=true
-RUN cargo build --release -p connections-web --jobs 1
+RUN cargo build --release -p connections-web
 
 FROM debian:bookworm-slim
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates curl && rm -rf /var/lib/apt/lists/*
