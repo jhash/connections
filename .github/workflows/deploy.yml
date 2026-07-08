@@ -81,11 +81,21 @@ jobs:
           mkdir -p bin/amd64
           cp target/x86_64-unknown-linux-gnu/release/connections bin/amd64/connections
 
+      - name: Verify amd64 binary
+        run: |
+          ls -la bin/amd64/
+          file bin/amd64/connections
+
       - name: Build archiver (arm64)
         run: |
           cross build --release -p connections-cli --target aarch64-unknown-linux-gnu
           mkdir -p bin/arm64
           cp target/aarch64-unknown-linux-gnu/release/connections bin/arm64/connections
+
+      - name: Verify arm64 binary
+        run: |
+          ls -la bin/arm64/
+          file bin/arm64/connections
 
       - name: Build and push archiver
         uses: docker/build-push-action@v6
