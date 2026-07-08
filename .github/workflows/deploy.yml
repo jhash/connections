@@ -84,7 +84,7 @@ jobs:
       - name: Verify amd64 binary
         run: |
           ls -la bin/amd64/
-          file bin/amd64/connections
+          ls -la bin/amd64/connections
 
       - name: Build archiver (arm64)
         run: |
@@ -95,7 +95,7 @@ jobs:
       - name: Verify arm64 binary
         run: |
           ls -la bin/arm64/
-          file bin/arm64/connections
+          ls -la bin/arm64/connections
 
       - name: Build and push archiver
         uses: docker/build-push-action@v6
