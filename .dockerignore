@@ -1,0 +1,36 @@
+# Ignore git directory
+git
+.git
+
+# Ignore target directory (Rust build artifacts)
+target
+
+# Ignore IDE and editor files
+.idea
+.vscode
+*.swp
+
+# Ignore log files
+*.log
+
+# Ignore environment files
+.env
+.env.local
+
+# Ignore SQLx data directory
+.sqlx
+
+# Ignore Cargo cache
+Cargo.lock
+
+# Ignore node modules
+node_modules
+
+# Ignore macOS files
+.DS_Store
+
+# Ignore any temporary files
+*.tmp
+
+# But we need to include the bin directory for the archiver build
+# The bin directory is created by the CI workflow and contains the pre-built binaries
