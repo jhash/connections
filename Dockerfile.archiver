@@ -6,7 +6,7 @@ FROM debian:bookworm-slim
 
 # Install only the runtime-only packages we need
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends git openssh-client ca-certificates \
+    && apt-get install -y --no-install-recommends git openssh-client ca-certificates tzdata \
     && rm -rf /var/lib/apt/lists/*
 
 # Select the right pre-built archiver binary for this platform
@@ -15,7 +15,8 @@ COPY bin/ /usr/local/bin/
 RUN case "$TARGETPLATFORM" in \
       linux/arm64) cp /usr/local/bin/arm64/connections /usr/local/bin/connections ;; \
       *)          cp /usr/local/bin/amd64/connections /usr/local/bin/connections ;; \
-    esac
+    esac && \
+    chmod +x /usr/local/bin/connections
 
 # Copy the cron-style wrapper script and entrypoint
 COPY scripts/run-daily.sh /scripts/run-daily.sh
