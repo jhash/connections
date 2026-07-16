@@ -413,9 +413,11 @@ pub async fn game_page(state: AppState, id_or_date: Option<String>, session_id: 
             }
             .word-grid {
                 display: grid;
-                grid-template-columns: repeat(4, 1fr);
+                grid-template-columns: repeat(4, minmax(0, 1fr));
                 gap: 0.5rem;
-                max-width: 100%;
+                max-width: 37.5rem;
+                width: 100%;
+                box-sizing: border-box;
                 padding: 0 0.5rem;
             }
             .word {
@@ -423,8 +425,9 @@ pub async fn game_page(state: AppState, id_or_date: Option<String>, session_id: 
                 background: #efefe6;
                 color: black;
                 border-radius: 5px;
-                width: 9.375rem;
-                min-width: 9.375rem;
+                box-sizing: border-box;
+                width: 100%;
+                min-width: 0;
                 height: 5rem;
                 align-items: center;
                 text-align: center;
@@ -441,11 +444,9 @@ pub async fn game_page(state: AppState, id_or_date: Option<String>, session_id: 
                 white-space: normal;
                 line-height: 1.15;
             }
-            @media (max-width: 680px) {
+            @media (max-width: 480px) {
                 .word {
-                    width: auto;
-                    min-width: auto;
-                    max-width: 9.375rem;
+                    overflow-wrap: anywhere;
                 }
             }
             .word:hover {
