@@ -1,5 +1,422 @@
 [
   {
+    "date": "2026-07-16",
+    "id": 1202,
+    "editor": "Wyna Liu",
+    "categories": [
+      {
+        "title": "SKINCARE PRODUCTS",
+        "cards": [
+          {
+            "content": "CLAY MASK",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 15,
+            "id": null
+          },
+          {
+            "content": "EYE CREAM",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 13,
+            "id": null
+          },
+          {
+            "content": "PEEL",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 8,
+            "id": null
+          },
+          {
+            "content": "TONER",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 4,
+            "id": null
+          }
+        ]
+      },
+      {
+        "title": "SHADES OF BLACK",
+        "cards": [
+          {
+            "content": "CHARCOAL",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 7,
+            "id": null
+          },
+          {
+            "content": "INK",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 1,
+            "id": null
+          },
+          {
+            "content": "JET",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 2,
+            "id": null
+          },
+          {
+            "content": "PITCH",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 9,
+            "id": null
+          }
+        ]
+      },
+      {
+        "title": "ASSOCIATED WITH PRECISION",
+        "cards": [
+          {
+            "content": "BULLSEYE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 11,
+            "id": null
+          },
+          {
+            "content": "CLOCKWORK",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 14,
+            "id": null
+          },
+          {
+            "content": "LASER",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 6,
+            "id": null
+          },
+          {
+            "content": "NEEDLE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 0,
+            "id": null
+          }
+        ]
+      },
+      {
+        "title": "STARTING WITH TINY MARKS",
+        "cards": [
+          {
+            "content": "DOT MATRIX",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 3,
+            "id": null
+          },
+          {
+            "content": "PERIOD PIECE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 10,
+            "id": null
+          },
+          {
+            "content": "POINT BREAK",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 5,
+            "id": null
+          },
+          {
+            "content": "SPOT REMOVER",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 12,
+            "id": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-07-15",
+    "id": 1217,
+    "editor": "Wyna Liu",
+    "categories": [
+      {
+        "title": "TERMS FOR THE LEGAL SYSTEM",
+        "cards": [
+          {
+            "content": "BAR",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 3,
+            "id": null
+          },
+          {
+            "content": "BENCH",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 5,
+            "id": null
+          },
+          {
+            "content": "COURT",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 11,
+            "id": null
+          },
+          {
+            "content": "TRIBUNAL",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 14,
+            "id": null
+          }
+        ]
+      },
+      {
+        "title": "THINGS WITH LACES",
+        "cards": [
+          {
+            "content": "BASEBALL GLOVE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 15,
+            "id": null
+          },
+          {
+            "content": "CORSET",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 12,
+            "id": null
+          },
+          {
+            "content": "FOOTBALL",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 1,
+            "id": null
+          },
+          {
+            "content": "SHOE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 7,
+            "id": null
+          }
+        ]
+      },
+      {
+        "title": "KINDS OF SPORTS",
+        "cards": [
+          {
+            "content": "EXTREME",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 8,
+            "id": null
+          },
+          {
+            "content": "MOTOR",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 10,
+            "id": null
+          },
+          {
+            "content": "RACKET",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 0,
+            "id": null
+          },
+          {
+            "content": "WATER",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 13,
+            "id": null
+          }
+        ]
+      },
+      {
+        "title": "WORDS BEFORE \"ROOM\" TO INDICATE EXTRA SPACE",
+        "cards": [
+          {
+            "content": "BREATHING",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 9,
+            "id": null
+          },
+          {
+            "content": "ELBOW",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 6,
+            "id": null
+          },
+          {
+            "content": "HEAD",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 4,
+            "id": null
+          },
+          {
+            "content": "WIGGLE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 2,
+            "id": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-07-14",
+    "id": 1218,
+    "editor": "Wyna Liu",
+    "categories": [
+      {
+        "title": "CONTRACT",
+        "cards": [
+          {
+            "content": "AGREEMENT",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 13,
+            "id": null
+          },
+          {
+            "content": "BARGAIN",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 8,
+            "id": null
+          },
+          {
+            "content": "DEAL",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 6,
+            "id": null
+          },
+          {
+            "content": "UNDERSTANDING",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 10,
+            "id": null
+          }
+        ]
+      },
+      {
+        "title": "EDIT MENU OPTIONS",
+        "cards": [
+          {
+            "content": "COPY",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 7,
+            "id": null
+          },
+          {
+            "content": "CUT",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 2,
+            "id": null
+          },
+          {
+            "content": "DELETE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 15,
+            "id": null
+          },
+          {
+            "content": "PASTE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 12,
+            "id": null
+          }
+        ]
+      },
+      {
+        "title": "KINDS OF BASKETS",
+        "cards": [
+          {
+            "content": "EASTER",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 14,
+            "id": null
+          },
+          {
+            "content": "GROCERY",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 9,
+            "id": null
+          },
+          {
+            "content": "LAUNDRY",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 4,
+            "id": null
+          },
+          {
+            "content": "PICNIC",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 1,
+            "id": null
+          }
+        ]
+      },
+      {
+        "title": "SYMBOLIZED WITH ARROWS",
+        "cards": [
+          {
+            "content": "RECYCLING",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 5,
+            "id": null
+          },
+          {
+            "content": "SHUFFLE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 3,
+            "id": null
+          },
+          {
+            "content": "THIS SIDE UP",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 11,
+            "id": null
+          },
+          {
+            "content": "U-TURN",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 0,
+            "id": null
+          }
+        ]
+      }
+    ]
+  },
+  {
     "date": "2026-07-13",
     "id": 1208,
     "editor": "Wyna Liu",
