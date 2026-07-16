@@ -28,19 +28,29 @@ find_available_port() {
     return 1
 }
 
+# Find the main repo checkout (shared across all Conductor worktrees)
+get_main_repo_root() {
+    if [ -n "$CONDUCTOR_ROOT_PATH" ]; then
+        echo "$CONDUCTOR_ROOT_PATH"
+    else
+        # Fallback for non-Conductor checkouts: common git dir's parent is the main worktree
+        (cd "$(dirname "$(git rev-parse --git-common-dir)")" && pwd)
+    fi
+}
+
 # Get or create shared database URL
 get_database_url() {
     if [ -n "$DATABASE_URL" ]; then
         echo "$DATABASE_URL"
     else
-        # Default to workspace root database
-        echo "sqlite://$REPO_ROOT/games.db?mode=rwc"
+        # Default to main repo's database, shared across all worktrees
+        echo "sqlite://$(get_main_repo_root)/games.db?mode=rwc"
     fi
 }
 
 PORT=$(find_available_port)
 DB_URL=$(get_database_url)
-ARCHIVE_PATH="${ARCHIVE_PATH:-$REPO_ROOT/archive.json}"
+ARCHIVE_PATH="${ARCHIVE_PATH:-$(get_main_repo_root)/archive.json}"
 
 export DATABASE_URL="$DB_URL"
 export ARCHIVE_PATH="$ARCHIVE_PATH"
