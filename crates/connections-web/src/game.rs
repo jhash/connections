@@ -419,6 +419,7 @@ pub async fn game_page(state: AppState, id_or_date: Option<String>, session_id: 
                 padding: 0 0.5rem;
             }
             .word {
+                container-type: inline-size;
                 background: #efefe6;
                 color: black;
                 border-radius: 5px;
@@ -430,15 +431,21 @@ pub async fn game_page(state: AppState, id_or_date: Option<String>, session_id: 
                 user-select: none;
                 cursor: pointer;
                 border: none;
-                font-size: 1.125rem;
+                font-size: clamp(0.65rem, 13cqw, 1.125rem);
                 font-weight: 600;
                 text-transform: uppercase;
-                @media (max-width: 680px) {
+                padding: 0.25rem;
+                overflow: hidden;
+                word-break: normal;
+                overflow-wrap: normal;
+                white-space: normal;
+                line-height: 1.15;
+            }
+            @media (max-width: 680px) {
+                .word {
                     width: auto;
                     min-width: auto;
                     max-width: 9.375rem;
-                    font-size: 1rem;
-                    white-space: break-spaces;
                 }
             }
             .word:hover {
