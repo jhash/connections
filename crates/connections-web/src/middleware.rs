@@ -32,11 +32,26 @@ pub async fn session_middleware(
     let (session_id, jar) = match jar.get("session_id") {
         Some(cookie) => {
             let id = cookie.value().to_string();
-            sqlx::query("UPDATE sessions SET last_seen = datetime('now') WHERE id = ?")
+            let updated = sqlx::query("UPDATE sessions SET last_seen = datetime('now') WHERE id = ?")
                 .bind(&id)
                 .execute(&state.db)
                 .await
-                .ok();
+                .map(|r| r.rows_affected())
+                .unwrap_or(0);
+
+            if updated == 0 {
+                // Cookie references a session row that no longer exists (e.g. db was
+                // reseeded/reset since the cookie was issued). Recreate it rather than
+                // letting downstream inserts fail their FK constraint on session_id.
+                sqlx::query(
+                    "INSERT INTO sessions (id, created_at, last_seen)
+                     VALUES (?, datetime('now'), datetime('now'))",
+                )
+                .bind(&id)
+                .execute(&state.db)
+                .await
+                .unwrap();
+            }
             (id, jar)
         }
         None => {
