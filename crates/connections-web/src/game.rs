@@ -42,7 +42,13 @@ fn word_box(
         &card_id.to_string(),
     ]
     .join("/");
-    let mut class = "word".to_string();
+    let longest_word_len = word.split_whitespace().map(str::len).max().unwrap_or(0);
+    let fit_class = match longest_word_len {
+        0..=12 => "",
+        13..=16 => " word-fit-2",
+        _ => " word-fit-3",
+    };
+    let mut class = format!("word{}", fit_class);
     let mut title = None;
     let mut disabled = false;
 
@@ -434,15 +440,21 @@ pub async fn game_page(state: AppState, id_or_date: Option<String>, session_id: 
                 user-select: none;
                 cursor: pointer;
                 border: none;
-                font-size: clamp(0.65rem, 13cqw, 1.125rem);
                 font-weight: 600;
                 text-transform: uppercase;
                 padding: 0.25rem;
                 overflow: hidden;
+                font-size: clamp(0.65rem, 13cqw, 1.125rem);
                 word-break: normal;
                 overflow-wrap: normal;
                 white-space: normal;
                 line-height: 1.15;
+            }
+            .word-fit-2 {
+                font-size: clamp(0.6rem, 11cqw, 0.9rem);
+            }
+            .word-fit-3 {
+                font-size: clamp(0.55rem, 9cqw, 0.75rem);
             }
             @media (max-width: 480px) {
                 .word {
