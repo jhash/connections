@@ -22,5 +22,8 @@ docker buildx build \
   -t jhash14/connections-archiver:latest \
   --push .
 
-echo "Done. Deploy on OCI box:"
-echo "ssh deploy@<oci-ip> 'docker pull jhash14/connections-archiver:latest && docker service update --image jhash14/connections-archiver:latest connections_archiver'"
+echo "Deploying to OCI box..."
+OCI_IP=$(oci-ip)
+ssh deploy@"$OCI_IP" 'docker pull jhash14/connections-archiver:latest && docker service update --image jhash14/connections-archiver:latest connections_archiver'
+
+echo "Done."
