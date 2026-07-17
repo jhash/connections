@@ -4,21 +4,16 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 
-echo "Installing cross if needed..."
-if ! command -v cross &> /dev/null; then
-  cargo install cross --locked
-fi
-
-echo "Adding aarch64 target..."
-rustup target add aarch64-unknown-linux-gnu
-
-echo "Building aarch64 binary..."
-cd "$PROJECT_DIR"
-cross build --release -p connections-cli --target aarch64-unknown-linux-gnu
+echo "Building aarch64 binary via Docker..."
+mkdir -p "$PROJECT_DIR/bin/arm64"
+docker run --rm \
+  -v "$PROJECT_DIR:/workspace" \
+  -w /workspace \
+  rust:latest \
+  bash -c 'rustup target add aarch64-unknown-linux-gnu && cargo build --release -p connections-cli --target aarch64-unknown-linux-gnu'
 
 echo "Copying to bin/arm64..."
-mkdir -p bin/arm64
-cp target/aarch64-unknown-linux-gnu/release/connections bin/arm64/connections
+cp "$PROJECT_DIR/target/aarch64-unknown-linux-gnu/release/connections" "$PROJECT_DIR/bin/arm64/connections"
 
 echo "Building and pushing Docker image..."
 docker buildx build \
