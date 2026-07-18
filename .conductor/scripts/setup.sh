@@ -9,6 +9,9 @@ cd "$REPO_ROOT"
 
 echo "Setting up worktree at: $REPO_ROOT"
 
+# Keep root branch in sync with remote after merges
+git -C "$CONDUCTOR_ROOT_PATH" fetch --prune origin && git -C "$CONDUCTOR_ROOT_PATH" pull --ff-only || true
+
 # Ensure migrations run on startup (cargo will handle this)
 # Just verify Rust toolchain exists
 if ! command -v cargo &> /dev/null; then
