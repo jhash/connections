@@ -2,7 +2,7 @@ use crate::AppState;
 use axum::extract::{Path, State};
 use chrono;
 use connections_core::puzzle::{Card, Category, NytPuzzle};
-use maud::{DOCTYPE, Markup, html};
+use maud::{DOCTYPE, Markup, html, PreEscaped};
 use std::collections::HashMap;
 
 // From gemini
@@ -63,11 +63,11 @@ fn word_box(
     html! {
         @if !disabled {
             @if selected {
-                button class=(class.as_str()) hx-delete=(update_path) hx-swap="outerHTML" title=(title.unwrap_or_default()) {
+                button class=(class.as_str()) data-card-id=(card_id.to_string()) hx-delete=(update_path) hx-swap="outerHTML" title=(title.unwrap_or_default()) {
                     (word)
                 }
             } @else {
-                button class=(class.as_str()) hx-put=(update_path) hx-swap="outerHTML" title=(title.unwrap_or_default()) {
+                button class=(class.as_str()) data-card-id=(card_id.to_string()) hx-put=(update_path) hx-swap="outerHTML" title=(title.unwrap_or_default()) {
                     (word)
                 }
             }
@@ -507,6 +507,31 @@ pub async fn game_page(state: AppState, id_or_date: Option<String>, session_id: 
         script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.10/dist/htmx.min.js"
             integrity="sha384-H5SrcfygHmAuTDZphMHqBJLc3FhssKjG7w/CeCpFReSfwBWDTKpkzPP8c+cLsK+V"
             crossorigin="anonymous" {}
+        script {
+            (PreEscaped(r#"
+            const selectedSet = new Set();
+            document.querySelectorAll('.word.selected').forEach(btn => {
+              selectedSet.add(btn.dataset.cardId);
+            });
+
+            document.addEventListener('click', (e) => {
+              if (!e.target.classList.contains('word')) return;
+
+              const cardId = e.target.dataset.cardId;
+              const isSelected = e.target.classList.contains('selected');
+              const wouldExceed = !isSelected && selectedSet.size >= 4;
+
+              if (wouldExceed) {
+                e.preventDefault();
+                e.stopPropagation();
+                return;
+              }
+
+              e.target.classList.toggle('selected');
+              isSelected ? selectedSet.delete(cardId) : selectedSet.add(cardId);
+            }, true);
+            "#))
+        }
         (game_container(
             &state,
             &game_state,
