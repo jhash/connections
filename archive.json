@@ -1,5 +1,148 @@
 [
   {
+    "date": "2026-07-28",
+    "id": 1227,
+    "editor": "Wyna Liu",
+    "categories": [
+      {
+        "title": "COMMAND",
+        "cards": [
+          {
+            "content": "CAPTAIN",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 0,
+            "id": null
+          },
+          {
+            "content": "DIRECT",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 7,
+            "id": null
+          },
+          {
+            "content": "HEAD",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 11,
+            "id": null
+          },
+          {
+            "content": "LEAD",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 13,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "HOW DO YOU LIKE THEM APPLES",
+        "cards": [
+          {
+            "content": "EMPIRE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 3,
+            "id": null
+          },
+          {
+            "content": "FUJI",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 9,
+            "id": null
+          },
+          {
+            "content": "GALA",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 10,
+            "id": null
+          },
+          {
+            "content": "HONEYCRISP",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 14,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "SHOE BRANDS STARTING WITH \"C\"",
+        "cards": [
+          {
+            "content": "CAMPER",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 6,
+            "id": null
+          },
+          {
+            "content": "CLARKS",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 1,
+            "id": null
+          },
+          {
+            "content": "CONVERSE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 12,
+            "id": null
+          },
+          {
+            "content": "CROCS",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 15,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "STARTING WITH PALINDROMIC NAMES",
+        "cards": [
+          {
+            "content": "ANNAPOLIS",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 4,
+            "id": null
+          },
+          {
+            "content": "BOBSLED",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 5,
+            "id": null
+          },
+          {
+            "content": "EVEREST",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 8,
+            "id": null
+          },
+          {
+            "content": "OTTOMAN",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 2,
+            "id": null
+          }
+        ],
+        "position": null
+      }
+    ]
+  },
+  {
     "date": "2026-07-27",
     "id": 1220,
     "editor": "Wyna Liu",
