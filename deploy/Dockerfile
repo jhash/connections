@@ -17,7 +17,7 @@ COPY .sqlx/ ./.sqlx/
 ENV SQLX_OFFLINE=true
 RUN cargo build --release -p connections-web
 
-FROM debian:bookworm-slim
+FROM ubuntu:24.04
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates curl && rm -rf /var/lib/apt/lists/*
 COPY --from=builder /build/target/release/connections-web /usr/local/bin/connections-web
 COPY archive.json /opt/connections/archive.json

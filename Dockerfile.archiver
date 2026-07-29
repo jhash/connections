@@ -2,7 +2,7 @@
 
 # ── Runtime stage ───────────────────────────────────────────────────────
 # No Rust build step - binaries are pre-built on the runner via cross.
-FROM debian:bookworm-slim
+FROM ubuntu:24.04
 
 # Install only the runtime-only packages we need
 RUN apt-get update \

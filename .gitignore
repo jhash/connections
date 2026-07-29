@@ -12,3 +12,5 @@ games.db-wal
 server.log
 
 .zed/debug.json
+
+.DS_Store
