@@ -25,13 +25,23 @@ fn word_grid(children: Markup) -> Markup {
     }
 }
 
+fn category_banner(cat_pos: u8, title: &str, words: &[String]) -> Markup {
+    let class = format!("category-banner solved-{}", cat_pos);
+    let words_str = words.join(", ");
+    html! {
+        div id=(format!("category-{}", cat_pos)) class=(class.as_str()) {
+            div.category-title { (title) }
+            div.category-words { (words_str) }
+        }
+    }
+}
+
 fn word_box(
     word: &str,
     selected: bool,
     puzzle_id: &i64,
     session_id: &str,
     card_id: &i64,
-    solved: Option<(u8, &str)>,
 ) -> Markup {
     let update_path = vec![
         "api/puzzles",
@@ -49,30 +59,19 @@ fn word_box(
         _ => " word-fit-3",
     };
     let mut class = format!("word{}", fit_class);
-    let mut title = None;
-    let mut disabled = false;
-
-    if let Some((cat_pos, cat_title)) = solved {
-        class = format!("{} solved-{}", class, cat_pos);
-        title = Some(cat_title.to_string());
-        disabled = true;
-    } else if selected {
+    if selected {
         class = format!("{} selected", class);
     }
 
+    let box_id = format!("card-{}", card_id);
+
     html! {
-        @if !disabled {
-            @if selected {
-                button class=(class.as_str()) hx-delete=(update_path) hx-swap="outerHTML" title=(title.unwrap_or_default()) {
-                    (word)
-                }
-            } @else {
-                button class=(class.as_str()) hx-put=(update_path) hx-swap="outerHTML" title=(title.unwrap_or_default()) {
-                    (word)
-                }
+        @if selected {
+            button id=(box_id) class=(class.as_str()) hx-delete=(update_path) hx-swap="outerHTML" {
+                (word)
             }
         } @else {
-            div class=(class.as_str()) {
+            button id=(box_id) class=(class.as_str()) hx-put=(update_path) hx-swap="outerHTML" {
                 (word)
             }
         }
@@ -262,7 +261,7 @@ async fn get_puzzle(state: &AppState, date: &str) -> Option<NytPuzzle> {
 fn game_actions(game_state: &GameState, swap: bool, puzzle_id: i64, session_id: &str) -> Markup {
     let submit_disabled = game_state.selected.count() < 4;
     let deselect_all_disabled = game_state.selected.count() == 0;
-    let swap_oob = if swap { "true" } else { "false" };
+    let swap_oob = if swap { "morph:outerHTML" } else { "false" };
 
     let deselect_all_path = vec![
         "api/puzzles",
@@ -297,7 +296,7 @@ async fn game_container(
     session_id: &str,
     swap: bool,
 ) -> Markup {
-    let swap_oob = if swap { "true" } else { "false" };
+    let swap_oob = if swap { "morph:outerHTML" } else { "false" };
 
     let title = puzzle.date.to_string();
     let lives = game_state.lives;
@@ -328,10 +327,13 @@ async fn game_container(
         solved_map.insert(row.tile_pos as u8, (row.cat_pos as u8, row.title));
     }
 
-    let game_over = game_state.lives == 0;
+    let won = solved_map.len() == 16;
+    let lost = game_state.lives == 0 && !won;
+
     let mut all_solved_map = solved_map.clone();
-    if game_over {
-        // Add all categories' tiles to solved_map
+    if lost {
+        // Force-reveal every remaining category's tiles so they render as
+        // solved banners too, instead of staying in the grid.
         for (idx, category) in puzzle.categories.iter().enumerate() {
             let cat_pos = category.position.unwrap_or(idx as u8);
             let title = category.title.clone();
@@ -341,30 +343,57 @@ async fn game_container(
         }
     }
 
+    // Any category whose tiles are all accounted for (real solve, or
+    // forced-reveal on loss) gets pulled out of the grid entirely and
+    // rendered as a banner instead.
+    let mut solved_categories: Vec<(u8, String, Vec<String>)> = Vec::new();
+    for (idx, category) in puzzle.categories.iter().enumerate() {
+        let cat_pos = category.position.unwrap_or(idx as u8);
+        let is_solved = category
+            .cards
+            .iter()
+            .all(|c| all_solved_map.contains_key(&c.position));
+        if is_solved {
+            let mut cat_cards = category.cards.clone();
+            cat_cards.sort_by_key(|c| c.position);
+            let words = cat_cards
+                .iter()
+                .map(|c| c.content.clone().unwrap_or_default())
+                .collect();
+            solved_categories.push((cat_pos, category.title.clone(), words));
+        }
+    }
+    solved_categories.sort_by_key(|(pos, _, _)| *pos);
+
     let cards = cards
         .into_iter()
-        .filter(|card| !solved_map.contains_key(&card.position));
+        .filter(|card| !all_solved_map.contains_key(&card.position));
 
     let actions = game_actions(&game_state, swap, puzzle.id.unwrap(), &session_id);
 
     html! {
-        #game-container.game-container hx-swap-oob=(swap_oob) {
+        #game-container.game-container hx-ext="morph" hx-swap-oob=(swap_oob) {
             h1 { (title) }
             h5 { ("Lives: ")(lives) }
-            (word_grid(html! {
-                @if game_over {
-                    div.game-over { "Game Over! All categories revealed." }
+            @if won {
+                div.game-over { "You solved it!" }
+            } @else if lost {
+                div.game-over { "Game Over! All categories revealed." }
+            }
+            #solved-categories.solved-categories {
+                @for (cat_pos, cat_title, words) in &solved_categories {
+                    (category_banner(*cat_pos, cat_title, words))
                 }
+            }
+            (word_grid(html! {
                 @for card in cards {
                     @let card_pos = card.position;
-                    @let solved = all_solved_map.get(&card_pos);
                     (word_box(
                         &card.content.as_deref().unwrap(),
                         game_state.selected.is_selected(card_pos),
                         &puzzle.id.unwrap(),
                         &session_id,
                         &card.id.unwrap(),
-                        solved.map(|&(cat_pos, ref title)| (cat_pos, title.as_str()))
                     ))
                 }
             }))
@@ -472,6 +501,40 @@ pub async fn game_page(state: AppState, id_or_date: Option<String>, session_id: 
             .solved-1 { background: #a0c35a; }
             .solved-2 { background: #b0c4ef; }
             .solved-3 { background: #ba81c5; }
+            .solved-categories {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                max-width: 37.5rem;
+                width: 100%;
+                box-sizing: border-box;
+                padding: 0 0.5rem;
+            }
+            .solved-categories:empty {
+                display: none;
+            }
+            .category-banner {
+                border-radius: 5px;
+                box-sizing: border-box;
+                width: 100%;
+                height: 5rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 0.25rem;
+                text-align: center;
+                padding: 0.25rem 1rem;
+            }
+            .category-title {
+                font-weight: 800;
+                text-transform: uppercase;
+                font-size: 1.125rem;
+            }
+            .category-words {
+                text-transform: uppercase;
+                font-size: 1rem;
+            }
             .game-actions {
                 display: flex;
                 gap: 0.75rem;
@@ -507,6 +570,8 @@ pub async fn game_page(state: AppState, id_or_date: Option<String>, session_id: 
         script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.10/dist/htmx.min.js"
             integrity="sha384-H5SrcfygHmAuTDZphMHqBJLc3FhssKjG7w/CeCpFReSfwBWDTKpkzPP8c+cLsK+V"
             crossorigin="anonymous" {}
+        script src="https://cdn.jsdelivr.net/npm/idiomorph@0.7.3/dist/idiomorph-ext.min.js"
+            crossorigin="anonymous" {}
         (game_container(
             &state,
             &game_state,
@@ -537,7 +602,6 @@ pub async fn select_word(
             &puzzle_id,
             &session_id,
             &card.id.unwrap(),
-            None,
         );
     }
     // TODO: multi-select? I don't think NYT supports
@@ -554,7 +618,6 @@ pub async fn select_word(
             &puzzle_id,
             &session_id,
             &card.id.unwrap(),
-            None,
         ))
     }
 }
@@ -578,7 +641,6 @@ pub async fn deselect_word(
             &puzzle_id,
             &session_id,
             &card.id.unwrap(),
-            None,
         ))
     }
 }
