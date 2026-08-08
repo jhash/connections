@@ -1,5 +1,148 @@
 [
   {
+    "date": "2026-08-08",
+    "id": 1239,
+    "editor": "Wyna Liu",
+    "categories": [
+      {
+        "title": "QUAINT EXPRESSIONS OF EXCITEMENT",
+        "cards": [
+          {
+            "content": "HOT DOG",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 8,
+            "id": null
+          },
+          {
+            "content": "HURRAH",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 15,
+            "id": null
+          },
+          {
+            "content": "WHOOPEE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 1,
+            "id": null
+          },
+          {
+            "content": "YAHOO",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 13,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "CONVEY",
+        "cards": [
+          {
+            "content": "COUCH",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 7,
+            "id": null
+          },
+          {
+            "content": "EXPRESS",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 10,
+            "id": null
+          },
+          {
+            "content": "FRAME",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 14,
+            "id": null
+          },
+          {
+            "content": "PHRASE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 5,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "WORDS ABBREVIATED WITH LETTERS AS HOMOPHONES",
+        "cards": [
+          {
+            "content": "CUTIE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 4,
+            "id": null
+          },
+          {
+            "content": "EASY",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 0,
+            "id": null
+          },
+          {
+            "content": "EFFECTS",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 9,
+            "id": null
+          },
+          {
+            "content": "I OWE YOU",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 12,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "SAFETY ___",
+        "cards": [
+          {
+            "content": "BELT",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 2,
+            "id": null
+          },
+          {
+            "content": "GOGGLES",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 3,
+            "id": null
+          },
+          {
+            "content": "PIN",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 6,
+            "id": null
+          },
+          {
+            "content": "RAZOR",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 11,
+            "id": null
+          }
+        ],
+        "position": null
+      }
+    ]
+  },
+  {
     "date": "2026-08-07",
     "id": 1238,
     "editor": "Wyna Liu",
