@@ -1,5 +1,148 @@
 [
   {
+    "date": "2026-08-17",
+    "id": 1246,
+    "editor": "Wyna Liu",
+    "categories": [
+      {
+        "title": "VIDEO CALL PLATFORMS",
+        "cards": [
+          {
+            "content": "HUDDLE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 12,
+            "id": null
+          },
+          {
+            "content": "MEET",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 1,
+            "id": null
+          },
+          {
+            "content": "TEAMS",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 15,
+            "id": null
+          },
+          {
+            "content": "ZOOM",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 4,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "SPREADSHEET FEATURES",
+        "cards": [
+          {
+            "content": "FORMULA",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 13,
+            "id": null
+          },
+          {
+            "content": "FUNCTION",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 11,
+            "id": null
+          },
+          {
+            "content": "MACRO",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 0,
+            "id": null
+          },
+          {
+            "content": "SCRIPT",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 7,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "FIRST NAMES OF COUNTRY MUSIC LEGENDS",
+        "cards": [
+          {
+            "content": "DOLLY",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 2,
+            "id": null
+          },
+          {
+            "content": "JOHNNY",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 14,
+            "id": null
+          },
+          {
+            "content": "PATSY",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 10,
+            "id": null
+          },
+          {
+            "content": "WILLIE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 8,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "STARTING WITH PETS",
+        "cards": [
+          {
+            "content": "BIRDIE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 9,
+            "id": null
+          },
+          {
+            "content": "CATTLE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 5,
+            "id": null
+          },
+          {
+            "content": "DOGIE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 3,
+            "id": null
+          },
+          {
+            "content": "FISHEYE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 6,
+            "id": null
+          }
+        ],
+        "position": null
+      }
+    ]
+  },
+  {
     "date": "2026-08-16",
     "id": 1247,
     "editor": "Wyna Liu",
