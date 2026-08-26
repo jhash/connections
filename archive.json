@@ -1,5 +1,148 @@
 [
   {
+    "date": "2026-08-26",
+    "id": 1259,
+    "editor": "Wyna Liu",
+    "categories": [
+      {
+        "title": "\"THERE YOU HAVE IT!\"",
+        "cards": [
+          {
+            "content": "BEHOLD",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 10,
+            "id": null
+          },
+          {
+            "content": "PRESTO",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 5,
+            "id": null
+          },
+          {
+            "content": "SHAZAM",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 14,
+            "id": null
+          },
+          {
+            "content": "VOILÀ",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 12,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "KNACK",
+        "cards": [
+          {
+            "content": "FORTE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 3,
+            "id": null
+          },
+          {
+            "content": "GIFT",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 8,
+            "id": null
+          },
+          {
+            "content": "STRENGTH",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 15,
+            "id": null
+          },
+          {
+            "content": "TALENT",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 13,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "WHAT \"P\" MIGHT STAND FOR",
+        "cards": [
+          {
+            "content": "PAGE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 7,
+            "id": null
+          },
+          {
+            "content": "PARK",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 0,
+            "id": null
+          },
+          {
+            "content": "PHOSPHORUS",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 9,
+            "id": null
+          },
+          {
+            "content": "PIANO",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 2,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "KEY ___",
+        "cards": [
+          {
+            "content": "CHAIN",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 11,
+            "id": null
+          },
+          {
+            "content": "LARGO",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 4,
+            "id": null
+          },
+          {
+            "content": "LIME",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 1,
+            "id": null
+          },
+          {
+            "content": "SIGNATURE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 6,
+            "id": null
+          }
+        ],
+        "position": null
+      }
+    ]
+  },
+  {
     "date": "2026-08-25",
     "id": 1254,
     "editor": "Wyna Liu",
