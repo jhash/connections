@@ -1,5 +1,148 @@
 [
   {
+    "date": "2026-09-06",
+    "id": 1277,
+    "editor": "Wyna Liu",
+    "categories": [
+      {
+        "title": "UNRESTRICTED PERMISSION",
+        "cards": [
+          {
+            "content": "BLANK CHECK",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 5,
+            "id": null
+          },
+          {
+            "content": "CARTE BLANCHE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 10,
+            "id": null
+          },
+          {
+            "content": "FREE REIGN",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 12,
+            "id": null
+          },
+          {
+            "content": "FULL AUTHORITY",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 15,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "PLACES TO INSERT SOMETHING INTO ON A COMPUTER",
+        "cards": [
+          {
+            "content": "CARD SLOT",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 4,
+            "id": null
+          },
+          {
+            "content": "HEADPHONE JACK",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 11,
+            "id": null
+          },
+          {
+            "content": "OPTICAL DRIVE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 9,
+            "id": null
+          },
+          {
+            "content": "USB PORT",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 2,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "ABBREVIATIONS FOLLOWED BY REDUNDANT WORD",
+        "cards": [
+          {
+            "content": "ATM MACHINE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 3,
+            "id": null
+          },
+          {
+            "content": "LCD DISPLAY",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 14,
+            "id": null
+          },
+          {
+            "content": "PIN NUMBER",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 7,
+            "id": null
+          },
+          {
+            "content": "UPC CODE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 1,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "ENDING WITH WAYS TO CARVE A SURFACE",
+        "cards": [
+          {
+            "content": "COURT SCRIBE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 6,
+            "id": null
+          },
+          {
+            "content": "DIRECTOR'S CUT",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 8,
+            "id": null
+          },
+          {
+            "content": "PIZZA SLICE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 13,
+            "id": null
+          },
+          {
+            "content": "SAT SCORE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 0,
+            "id": null
+          }
+        ],
+        "position": null
+      }
+    ]
+  },
+  {
     "date": "2026-09-05",
     "id": 1289,
     "editor": "Wyna Liu",
