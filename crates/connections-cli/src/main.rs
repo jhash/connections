@@ -86,13 +86,13 @@ fn resolve_date(input: Option<&str>) -> String {
     }
 }
 
-fn fetch_puzzle_http(date: &str) -> Result<connections_core::puzzle::Puzzle, String> {
+async fn fetch_puzzle_http(date: &str) -> Result<connections_core::puzzle::Puzzle, String> {
     let url = format!("{NYT_API}/{date}.json");
-    let resp = reqwest::blocking::get(&url).map_err(|e| e.to_string())?;
+    let resp = reqwest::get(&url).await.map_err(|e| e.to_string())?;
     if !resp.status().is_success() {
         return Err(format!("HTTP {}", resp.status()));
     }
-    let raw = resp.json::<NytPuzzle>().map_err(|e| e.to_string())?;
+    let raw = resp.json::<NytPuzzle>().await.map_err(|e| e.to_string())?;
     Ok(connections_core::puzzle::Puzzle {
         date: date.to_string(),
         id: raw.id,
@@ -143,7 +143,7 @@ async fn cmd_words(date: Option<String>, user: Option<String>) {
 
     // Live fetch from NYT API.
     let date = resolve_date(Some(key));
-    let puzzle = fetch_puzzle_http(&date).unwrap_or_else(|e| {
+    let puzzle = fetch_puzzle_http(&date).await.unwrap_or_else(|e| {
         eprintln!("Error: {e}");
         std::process::exit(1);
     });
@@ -164,10 +164,10 @@ fn print_puzzle_words(puzzle: &connections_core::puzzle::Puzzle) {
     }
 }
 
-fn cmd_json(date: Option<String>) {
+async fn cmd_json(date: Option<String>) {
     let date = resolve_date(date.as_deref());
     let url = format!("{NYT_API}/{date}.json");
-    let resp = reqwest::blocking::get(&url).unwrap_or_else(|e| {
+    let resp = reqwest::get(&url).await.unwrap_or_else(|e| {
         eprintln!("Request failed: {e}");
         std::process::exit(1);
     });
@@ -175,7 +175,7 @@ fn cmd_json(date: Option<String>) {
         eprintln!("HTTP {}: no puzzle for {date}", resp.status());
         std::process::exit(1);
     }
-    println!("{}", resp.text().unwrap());
+    println!("{}", resp.text().await.unwrap());
 }
 
 async fn cmd_archive(output: PathBuf, since: String) {
@@ -210,7 +210,7 @@ async fn cmd_archive(output: PathBuf, since: String) {
             continue;
         }
 
-        match fetch_puzzle_http(&date_str) {
+        match fetch_puzzle_http(&date_str).await {
             Ok(puzzle) => {
                 eprintln!("Fetched #{} — {}", puzzle.id.unwrap(), puzzle.date);
                 puzzles.push(puzzle);
@@ -219,7 +219,7 @@ async fn cmd_archive(output: PathBuf, since: String) {
             Err(e) => eprintln!("Skip {date_str}: {e}"),
         }
 
-        std::thread::sleep(std::time::Duration::from_millis(200));
+        tokio::time::sleep(std::time::Duration::from_millis(200)).await;
     }
 
     puzzles.sort_by(|a, b| b.date.cmp(&a.date));
@@ -262,7 +262,7 @@ async fn cmd_user_archive(username: String, dir: PathBuf) {
     eprintln!("Cached: {} games", cached.len());
 
     let url = format!("{COMMUNITY_API}?page=1&pageSize=100000&sort=popular&q={username}");
-    let resp = reqwest::blocking::get(&url).unwrap_or_else(|e| {
+    let resp = reqwest::get(&url).await.unwrap_or_else(|e| {
         eprintln!("Request failed: {e}");
         std::process::exit(1);
     });
@@ -270,7 +270,7 @@ async fn cmd_user_archive(username: String, dir: PathBuf) {
         eprintln!("HTTP {}: fetch failed for user {username}", resp.status());
         std::process::exit(1);
     }
-    let body: CommunityGamesResponse = resp.json().unwrap_or_else(|e| {
+    let body: CommunityGamesResponse = resp.json().await.unwrap_or_else(|e| {
         eprintln!("Parse error: {e}");
         std::process::exit(1);
     });
@@ -454,7 +454,7 @@ async fn cmd_seed(db: PathBuf, archive: PathBuf, users: Vec<String>, users_dir: 
 async fn main() {
     match Cli::parse().command {
         Command::Words { date, user } => cmd_words(date, user).await,
-        Command::Json { date } => cmd_json(date),
+        Command::Json { date } => cmd_json(date).await,
         Command::Archive { output, since } => cmd_archive(output, since).await,
         Command::UserArchive { username, dir } => cmd_user_archive(username, dir).await,
         Command::Seed {
