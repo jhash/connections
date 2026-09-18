@@ -1,5 +1,148 @@
 [
   {
+    "date": "2026-09-18",
+    "id": 1294,
+    "editor": "Wyna Liu",
+    "categories": [
+      {
+        "title": "SEGMENT OF A PROCESS",
+        "cards": [
+          {
+            "content": "PHASE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 15,
+            "id": null
+          },
+          {
+            "content": "ROUND",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 8,
+            "id": null
+          },
+          {
+            "content": "STAGE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 9,
+            "id": null
+          },
+          {
+            "content": "STEP",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 3,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "ASSORTMENTS OF FOOD/DRINK",
+        "cards": [
+          {
+            "content": "FLIGHT",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 4,
+            "id": null
+          },
+          {
+            "content": "MEDLEY",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 11,
+            "id": null
+          },
+          {
+            "content": "PLATTER",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 6,
+            "id": null
+          },
+          {
+            "content": "SAMPLER",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 14,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "PARTS OF A FLIGHT",
+        "cards": [
+          {
+            "content": "BOARDING",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 13,
+            "id": null
+          },
+          {
+            "content": "CRUISE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 1,
+            "id": null
+          },
+          {
+            "content": "LANDING",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 7,
+            "id": null
+          },
+          {
+            "content": "TAKEOFF",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 10,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "___CASE",
+        "cards": [
+          {
+            "content": "BRIEF",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 12,
+            "id": null
+          },
+          {
+            "content": "PILLOW",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 0,
+            "id": null
+          },
+          {
+            "content": "STAIR",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 5,
+            "id": null
+          },
+          {
+            "content": "UPPER",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 2,
+            "id": null
+          }
+        ],
+        "position": null
+      }
+    ]
+  },
+  {
     "date": "2026-09-17",
     "id": 1296,
     "editor": "Wyna Liu",
