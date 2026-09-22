@@ -1,5 +1,148 @@
 [
   {
+    "date": "2026-09-22",
+    "id": 1307,
+    "editor": "Wyna Liu",
+    "categories": [
+      {
+        "title": "DEMONSTRATIVES",
+        "cards": [
+          {
+            "content": "THAT",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 1,
+            "id": null
+          },
+          {
+            "content": "THESE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 14,
+            "id": null
+          },
+          {
+            "content": "THIS",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 0,
+            "id": null
+          },
+          {
+            "content": "THOSE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 9,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "EMBELLISHMENT",
+        "cards": [
+          {
+            "content": "ACCENT",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 7,
+            "id": null
+          },
+          {
+            "content": "DETAIL",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 12,
+            "id": null
+          },
+          {
+            "content": "FLOURISH",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 15,
+            "id": null
+          },
+          {
+            "content": "TOUCH",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 8,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "OPTIONS ON A MULTIPLE CHOICE SURVEY",
+        "cards": [
+          {
+            "content": "AGREE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 6,
+            "id": null
+          },
+          {
+            "content": "DISAGREE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 13,
+            "id": null
+          },
+          {
+            "content": "NEUTRAL",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 11,
+            "id": null
+          },
+          {
+            "content": "OTHER",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 3,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "BEVERAGES WITH ACUTE ACCENTS REMOVED",
+        "cards": [
+          {
+            "content": "CAFE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 4,
+            "id": null
+          },
+          {
+            "content": "PATRON",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 5,
+            "id": null
+          },
+          {
+            "content": "ROSE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 10,
+            "id": null
+          },
+          {
+            "content": "THE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 2,
+            "id": null
+          }
+        ],
+        "position": null
+      }
+    ]
+  },
+  {
     "date": "2026-09-21",
     "id": 1293,
     "editor": "Wyna Liu",
