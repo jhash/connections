@@ -1,5 +1,148 @@
 [
   {
+    "date": "2026-10-02",
+    "id": 1310,
+    "editor": "Wyna Liu",
+    "categories": [
+      {
+        "title": "FINANCE",
+        "cards": [
+          {
+            "content": "BACK",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 12,
+            "id": null
+          },
+          {
+            "content": "BANKROLL",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 6,
+            "id": null
+          },
+          {
+            "content": "FUND",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 5,
+            "id": null
+          },
+          {
+            "content": "SUPPORT",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 11,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "FINGERS",
+        "cards": [
+          {
+            "content": "INDEX",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 4,
+            "id": null
+          },
+          {
+            "content": "LITTLE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 0,
+            "id": null
+          },
+          {
+            "content": "MIDDLE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 9,
+            "id": null
+          },
+          {
+            "content": "RING",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 3,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "CUSTOMARY",
+        "cards": [
+          {
+            "content": "COMMON",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 2,
+            "id": null
+          },
+          {
+            "content": "ROUTINE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 14,
+            "id": null
+          },
+          {
+            "content": "STANDARD",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 8,
+            "id": null
+          },
+          {
+            "content": "STOCK",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 10,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "PRIME ___",
+        "cards": [
+          {
+            "content": "NUMBER",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 13,
+            "id": null
+          },
+          {
+            "content": "REAL ESTATE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 1,
+            "id": null
+          },
+          {
+            "content": "RIB",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 7,
+            "id": null
+          },
+          {
+            "content": "TIME",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 15,
+            "id": null
+          }
+        ],
+        "position": null
+      }
+    ]
+  },
+  {
     "date": "2026-10-01",
     "id": 1314,
     "editor": "Wyna Liu",
