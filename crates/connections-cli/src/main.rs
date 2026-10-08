@@ -6,8 +6,10 @@ use connections_core::{
 };
 use serde::Deserialize;
 use sqlx::SqlitePool;
+use sqlx::sqlite::{SqliteConnectOptions, SqliteJournalMode, SqliteSynchronous};
 use std::collections::HashSet;
 use std::path::PathBuf;
+use std::str::FromStr;
 use tokio::fs;
 
 #[derive(Parser)]
@@ -426,7 +428,16 @@ async fn seed_community(pool: &SqlitePool, username: &str, users_dir: &PathBuf) 
 
 async fn cmd_seed(db: PathBuf, archive: PathBuf, users: Vec<String>, users_dir: PathBuf) {
     let db_url = format!("sqlite://{}?mode=rwc", db.display());
-    let pool = SqlitePool::connect(&db_url).await.unwrap_or_else(|e| {
+    let options = SqliteConnectOptions::from_str(&db_url)
+        .unwrap_or_else(|e| {
+            eprintln!("Failed to parse database URL ({db_url}): {e}");
+            std::process::exit(1);
+        })
+        .journal_mode(SqliteJournalMode::Wal)
+        .synchronous(SqliteSynchronous::Normal)
+        .busy_timeout(std::time::Duration::from_secs(10));
+
+    let pool = SqlitePool::connect_with(options).await.unwrap_or_else(|e| {
         eprintln!("Failed to open {}: {e}", db.display());
         std::process::exit(1);
     });

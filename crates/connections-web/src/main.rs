@@ -8,9 +8,11 @@ use connections_web::{
     AppState, deselect_all, deselect_word, game_page, select_word, submit_guess,
 };
 use listenfd::ListenFd;
-use sqlx::sqlite::SqlitePoolOptions;
+use sqlx::sqlite::{SqliteConnectOptions, SqliteJournalMode, SqlitePoolOptions, SqliteSynchronous};
 use std::path::PathBuf;
+use std::str::FromStr;
 use std::sync::Arc;
+use std::time::Duration;
 
 mod middleware;
 use self::middleware::SessionId;
@@ -60,9 +62,19 @@ async fn main() {
     let db_url = std::env::var("DATABASE_URL")
         .unwrap_or_else(|_| format!("sqlite://{}?mode=rwc", workspace_path("games.db").display()));
 
+    let db_options = SqliteConnectOptions::from_str(&db_url)
+        .unwrap_or_else(|e| {
+            eprintln!("Failed to parse database URL ({db_url}): {e}");
+            std::process::exit(1);
+        })
+        .journal_mode(SqliteJournalMode::Wal)
+        // NORMAL trades an fsync per commit for losing the last commits on host power loss.
+        .synchronous(SqliteSynchronous::Normal)
+        .busy_timeout(Duration::from_secs(10));
+
     let db = SqlitePoolOptions::new()
         .max_connections(5)
-        .connect(&db_url)
+        .connect_with(db_options)
         .await
         .unwrap_or_else(|e| {
             eprintln!("Failed to open database ({db_url}): {e}");
