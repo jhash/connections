@@ -1,5 +1,148 @@
 [
   {
+    "date": "2026-10-12",
+    "id": 1317,
+    "editor": "Wyna Liu",
+    "categories": [
+      {
+        "title": "STATUS",
+        "cards": [
+          {
+            "content": "CONDITION",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 8,
+            "id": null
+          },
+          {
+            "content": "SHAPE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 6,
+            "id": null
+          },
+          {
+            "content": "SITUATION",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 10,
+            "id": null
+          },
+          {
+            "content": "STATE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 2,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "TOLERATE",
+        "cards": [
+          {
+            "content": "BEAR",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 11,
+            "id": null
+          },
+          {
+            "content": "HANDLE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 5,
+            "id": null
+          },
+          {
+            "content": "STAND",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 13,
+            "id": null
+          },
+          {
+            "content": "WEATHER",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 7,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "WORD SHORTENINGS, OFTEN",
+        "cards": [
+          {
+            "content": "ABBREVIATION",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 3,
+            "id": null
+          },
+          {
+            "content": "CONTRACTION",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 9,
+            "id": null
+          },
+          {
+            "content": "ELISION",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 14,
+            "id": null
+          },
+          {
+            "content": "NICKNAME",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 4,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "WORDS MADE USING U.S. POSTAL ABBREVIATIONS",
+        "cards": [
+          {
+            "content": "ALKYLAMIDE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 12,
+            "id": null
+          },
+          {
+            "content": "CALAMARI",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 0,
+            "id": null
+          },
+          {
+            "content": "MANDARIN",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 1,
+            "id": null
+          },
+          {
+            "content": "MELAMINE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 15,
+            "id": null
+          }
+        ],
+        "position": null
+      }
+    ]
+  },
+  {
     "date": "2026-10-11",
     "id": 1312,
     "editor": "Wyna Liu",
