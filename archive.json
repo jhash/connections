@@ -1,5 +1,148 @@
 [
   {
+    "date": "2026-10-23",
+    "id": 1339,
+    "editor": "Wyna Liu",
+    "categories": [
+      {
+        "title": "FORTHRIGHT",
+        "cards": [
+          {
+            "content": "DIRECT",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 2,
+            "id": null
+          },
+          {
+            "content": "FRANK",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 12,
+            "id": null
+          },
+          {
+            "content": "OPEN",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 11,
+            "id": null
+          },
+          {
+            "content": "VOCAL",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 5,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "THINGS YOU INSTALL ON A COMPUTER",
+        "cards": [
+          {
+            "content": "DRIVER",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 6,
+            "id": null
+          },
+          {
+            "content": "EXTENSION",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 0,
+            "id": null
+          },
+          {
+            "content": "PLUGIN",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 15,
+            "id": null
+          },
+          {
+            "content": "UPDATE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 10,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "QUANTITIES IN A FORMULA FOR POWER",
+        "cards": [
+          {
+            "content": "DISTANCE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 7,
+            "id": null
+          },
+          {
+            "content": "FORCE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 13,
+            "id": null
+          },
+          {
+            "content": "POWER",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 3,
+            "id": null
+          },
+          {
+            "content": "TIME",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 9,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "___ TAP",
+        "cards": [
+          {
+            "content": "DOUBLE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 14,
+            "id": null
+          },
+          {
+            "content": "LOVE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 1,
+            "id": null
+          },
+          {
+            "content": "PHONE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 8,
+            "id": null
+          },
+          {
+            "content": "SPINAL",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 4,
+            "id": null
+          }
+        ],
+        "position": null
+      }
+    ]
+  },
+  {
     "date": "2026-10-22",
     "id": 1336,
     "editor": "Wyna Liu",
