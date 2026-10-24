@@ -1,5 +1,148 @@
 [
   {
+    "date": "2026-10-24",
+    "id": 1338,
+    "editor": "Wyna Liu",
+    "categories": [
+      {
+        "title": "KINDS OF STRIPS",
+        "cards": [
+          {
+            "content": "BACON",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 2,
+            "id": null
+          },
+          {
+            "content": "COMIC",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 0,
+            "id": null
+          },
+          {
+            "content": "FILM",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 11,
+            "id": null
+          },
+          {
+            "content": "MÖBIUS",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 14,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "THINGS ON STICKS",
+        "cards": [
+          {
+            "content": "HOBBY HORSE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 7,
+            "id": null
+          },
+          {
+            "content": "PINWHEEL",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 9,
+            "id": null
+          },
+          {
+            "content": "POPSICLE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 4,
+            "id": null
+          },
+          {
+            "content": "SPARKLER",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 3,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "ONLINE AD FORMATS",
+        "cards": [
+          {
+            "content": "BANNER",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 8,
+            "id": null
+          },
+          {
+            "content": "INTERSTITIAL",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 12,
+            "id": null
+          },
+          {
+            "content": "OVERLAY",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 15,
+            "id": null
+          },
+          {
+            "content": "POP-UP",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 5,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "___ BAR",
+        "cards": [
+          {
+            "content": "CANDY",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 6,
+            "id": null
+          },
+          {
+            "content": "SALAD",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 1,
+            "id": null
+          },
+          {
+            "content": "SPACE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 10,
+            "id": null
+          },
+          {
+            "content": "SPORTS",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 13,
+            "id": null
+          }
+        ],
+        "position": null
+      }
+    ]
+  },
+  {
     "date": "2026-10-23",
     "id": 1339,
     "editor": "Wyna Liu",
