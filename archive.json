@@ -1,5 +1,148 @@
 [
   {
+    "date": "2026-11-07",
+    "id": 1350,
+    "editor": "Wyna Liu",
+    "categories": [
+      {
+        "title": "PIRATE'S PLUNDER",
+        "cards": [
+          {
+            "content": "BOOTY",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 15,
+            "id": null
+          },
+          {
+            "content": "BOUNTY",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 9,
+            "id": null
+          },
+          {
+            "content": "SPOILS",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 12,
+            "id": null
+          },
+          {
+            "content": "TREASURE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 7,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "KINDS OF SHIRTS",
+        "cards": [
+          {
+            "content": "HENLEY",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 8,
+            "id": null
+          },
+          {
+            "content": "POLO",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 0,
+            "id": null
+          },
+          {
+            "content": "RAGLAN",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 14,
+            "id": null
+          },
+          {
+            "content": "RINGER",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 5,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "FIRST WORDS OF U.S. STATE NAMES",
+        "cards": [
+          {
+            "content": "NEW",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 2,
+            "id": null
+          },
+          {
+            "content": "NORTH",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 10,
+            "id": null
+          },
+          {
+            "content": "RHODE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 4,
+            "id": null
+          },
+          {
+            "content": "SOUTH",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 13,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "ENDS OF STORM TYPES",
+        "cards": [
+          {
+            "content": "CANE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 11,
+            "id": null
+          },
+          {
+            "content": "CLONE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 3,
+            "id": null
+          },
+          {
+            "content": "EASTER",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 1,
+            "id": null
+          },
+          {
+            "content": "SOON",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 6,
+            "id": null
+          }
+        ],
+        "position": null
+      }
+    ]
+  },
+  {
     "date": "2026-11-06",
     "id": 1346,
     "editor": "Wyna Liu",
