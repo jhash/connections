@@ -1,5 +1,148 @@
 [
   {
+    "date": "2026-11-08",
+    "id": 1351,
+    "editor": "Wyna Liu",
+    "categories": [
+      {
+        "title": "MUSCULAR",
+        "cards": [
+          {
+            "content": "BUILT",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 4,
+            "id": null
+          },
+          {
+            "content": "CUT",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 0,
+            "id": null
+          },
+          {
+            "content": "JACKED",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 14,
+            "id": null
+          },
+          {
+            "content": "RIPPED",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 12,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "HAIR SALON SERVICES",
+        "cards": [
+          {
+            "content": "BLOWOUT",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 5,
+            "id": null
+          },
+          {
+            "content": "COLOR",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 8,
+            "id": null
+          },
+          {
+            "content": "EXTENSIONS",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 11,
+            "id": null
+          },
+          {
+            "content": "TRIM",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 13,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "THINGS THAT HELP MAKE SENSE OF A SITUATION",
+        "cards": [
+          {
+            "content": "CLARITY",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 6,
+            "id": null
+          },
+          {
+            "content": "CONTEXT",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 2,
+            "id": null
+          },
+          {
+            "content": "INSIGHT",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 10,
+            "id": null
+          },
+          {
+            "content": "PERSPECTIVE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 15,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "VEGETABLE HOMOPHONES",
+        "cards": [
+          {
+            "content": "CARAT",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 3,
+            "id": null
+          },
+          {
+            "content": "CHARRED",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 7,
+            "id": null
+          },
+          {
+            "content": "KORN",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 9,
+            "id": null
+          },
+          {
+            "content": "LEAK",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 1,
+            "id": null
+          }
+        ],
+        "position": null
+      }
+    ]
+  },
+  {
     "date": "2026-11-07",
     "id": 1350,
     "editor": "Wyna Liu",
