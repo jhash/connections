@@ -1,5 +1,148 @@
 [
   {
+    "date": "2026-11-09",
+    "id": 1366,
+    "editor": "Wyna Liu",
+    "categories": [
+      {
+        "title": "DECEITFUL SCHEME",
+        "cards": [
+          {
+            "content": "CON JOB",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 2,
+            "id": null
+          },
+          {
+            "content": "FLIMFLAM",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 13,
+            "id": null
+          },
+          {
+            "content": "RIP-OFF",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 11,
+            "id": null
+          },
+          {
+            "content": "SHELL GAME",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 5,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "JEANS DESCRIPTORS",
+        "cards": [
+          {
+            "content": "BOOTCUT",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 3,
+            "id": null
+          },
+          {
+            "content": "DISTRESSED",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 15,
+            "id": null
+          },
+          {
+            "content": "LOW-RISE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 9,
+            "id": null
+          },
+          {
+            "content": "SKINNY",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 12,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "THINGS WITH SERRATED EDGES",
+        "cards": [
+          {
+            "content": "GRAPEFRUIT SPOON",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 14,
+            "id": null
+          },
+          {
+            "content": "MINT LEAF",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 6,
+            "id": null
+          },
+          {
+            "content": "STEAK KNIFE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 0,
+            "id": null
+          },
+          {
+            "content": "TAPE DISPENSER",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 8,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "ENDING IN SEA CREATURES",
+        "cards": [
+          {
+            "content": "CARD SHARK",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 1,
+            "id": null
+          },
+          {
+            "content": "FUN SPONGE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 10,
+            "id": null
+          },
+          {
+            "content": "GAMMA RAY",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 7,
+            "id": null
+          },
+          {
+            "content": "NAVY SEAL",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 4,
+            "id": null
+          }
+        ],
+        "position": null
+      }
+    ]
+  },
+  {
     "date": "2026-11-08",
     "id": 1351,
     "editor": "Wyna Liu",
