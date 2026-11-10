@@ -1,5 +1,148 @@
 [
   {
+    "date": "2026-11-10",
+    "id": 1361,
+    "editor": "Wyna Liu",
+    "categories": [
+      {
+        "title": "HUBBUB",
+        "cards": [
+          {
+            "content": "BROUHAHA",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 11,
+            "id": null
+          },
+          {
+            "content": "FOOFARAW",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 3,
+            "id": null
+          },
+          {
+            "content": "HULLABALOO",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 6,
+            "id": null
+          },
+          {
+            "content": "KERFUFFLE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 13,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "LITERARY DEVICES",
+        "cards": [
+          {
+            "content": "HYPERBOLE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 10,
+            "id": null
+          },
+          {
+            "content": "METONYMY",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 15,
+            "id": null
+          },
+          {
+            "content": "ONOMATOPOEIA",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 1,
+            "id": null
+          },
+          {
+            "content": "OXYMORON",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 4,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "OLD-TIMEY OCCUPATIONS",
+        "cards": [
+          {
+            "content": "APOTHECARY",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 2,
+            "id": null
+          },
+          {
+            "content": "HABERDASHER",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 7,
+            "id": null
+          },
+          {
+            "content": "SCRIVENER",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 9,
+            "id": null
+          },
+          {
+            "content": "WAINWRIGHT",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 12,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "WORDS WITH FIVE OF ONE VOWEL",
+        "cards": [
+          {
+            "content": "ABRACADABRA",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 0,
+            "id": null
+          },
+          {
+            "content": "BEEKEEPER",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 8,
+            "id": null
+          },
+          {
+            "content": "INVISIBILITY",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 14,
+            "id": null
+          },
+          {
+            "content": "PROTOZOOLOGY",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 5,
+            "id": null
+          }
+        ],
+        "position": null
+      }
+    ]
+  },
+  {
     "date": "2026-11-09",
     "id": 1366,
     "editor": "Wyna Liu",
