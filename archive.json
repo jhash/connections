@@ -1,5 +1,148 @@
 [
   {
+    "date": "2026-11-12",
+    "id": 1352,
+    "editor": "Wyna Liu",
+    "categories": [
+      {
+        "title": "\"GADZOOKS!\"",
+        "cards": [
+          {
+            "content": "GOOD HEAVENS",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 11,
+            "id": null
+          },
+          {
+            "content": "GREAT SCOTT",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 0,
+            "id": null
+          },
+          {
+            "content": "HOLY SMOKES",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 14,
+            "id": null
+          },
+          {
+            "content": "JIMINY CRICKET",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 5,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "STARTING WITH VARIATIONS",
+        "cards": [
+          {
+            "content": "CHANGE PURSE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 9,
+            "id": null
+          },
+          {
+            "content": "FLUX CAPACITOR",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 3,
+            "id": null
+          },
+          {
+            "content": "SHIFT DRESS",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 12,
+            "id": null
+          },
+          {
+            "content": "SWING SET",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 15,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "ENDING IN WAYS TO COOK THINGS",
+        "cards": [
+          {
+            "content": "ARCTIC CHAR",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 10,
+            "id": null
+          },
+          {
+            "content": "COMEDY ROAST",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 7,
+            "id": null
+          },
+          {
+            "content": "DOC BROWN",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 8,
+            "id": null
+          },
+          {
+            "content": "YOU'RE TOAST",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 2,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "STARTING WITH BEST PICTURE OSCAR WINNERS",
+        "cards": [
+          {
+            "content": "GLADIATOR SANDALS",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 13,
+            "id": null
+          },
+          {
+            "content": "MARTY MCFLY",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 6,
+            "id": null
+          },
+          {
+            "content": "MOONLIGHT SONATA",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 4,
+            "id": null
+          },
+          {
+            "content": "ROCKY ROAD",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 1,
+            "id": null
+          }
+        ],
+        "position": null
+      }
+    ]
+  },
+  {
     "date": "2026-11-11",
     "id": 1354,
     "editor": "Wyna Liu",
