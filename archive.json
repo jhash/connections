@@ -1,5 +1,148 @@
 [
   {
+    "date": "2026-11-18",
+    "id": 1375,
+    "editor": "Wyna Liu",
+    "categories": [
+      {
+        "title": "DESCRIPTORS FOR A LEMON",
+        "cards": [
+          {
+            "content": "JUICY",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 5,
+            "id": null
+          },
+          {
+            "content": "OVOID",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 14,
+            "id": null
+          },
+          {
+            "content": "SOUR",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 12,
+            "id": null
+          },
+          {
+            "content": "YELLOW",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 3,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "THINGS BEES PRODUCE",
+        "cards": [
+          {
+            "content": "BUZZ",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 10,
+            "id": null
+          },
+          {
+            "content": "COMB",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 7,
+            "id": null
+          },
+          {
+            "content": "HONEY",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 1,
+            "id": null
+          },
+          {
+            "content": "VENOM",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 13,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "CITIES IN FRANCE",
+        "cards": [
+          {
+            "content": "CANNES",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 15,
+            "id": null
+          },
+          {
+            "content": "DIJON",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 6,
+            "id": null
+          },
+          {
+            "content": "NICE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 0,
+            "id": null
+          },
+          {
+            "content": "TOURS",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 9,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "___ FRY",
+        "cards": [
+          {
+            "content": "DEEP",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 2,
+            "id": null
+          },
+          {
+            "content": "FRENCH",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 8,
+            "id": null
+          },
+          {
+            "content": "SMALL",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 4,
+            "id": null
+          },
+          {
+            "content": "VOCAL",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 11,
+            "id": null
+          }
+        ],
+        "position": null
+      }
+    ]
+  },
+  {
     "date": "2026-11-17",
     "id": 1362,
     "editor": "Wyna Liu",
