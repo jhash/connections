@@ -1,5 +1,148 @@
 [
   {
+    "date": "2026-11-19",
+    "id": 1373,
+    "editor": "Wyna Liu",
+    "categories": [
+      {
+        "title": "MAKE A HOLE IN THE GROUND",
+        "cards": [
+          {
+            "content": "BORE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 7,
+            "id": null
+          },
+          {
+            "content": "BURROW",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 15,
+            "id": null
+          },
+          {
+            "content": "DIG",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 12,
+            "id": null
+          },
+          {
+            "content": "TUNNEL",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 1,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "MATERIALS OBTAINED FROM TREES",
+        "cards": [
+          {
+            "content": "CORK",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 3,
+            "id": null
+          },
+          {
+            "content": "RESIN",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 14,
+            "id": null
+          },
+          {
+            "content": "SAP",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 8,
+            "id": null
+          },
+          {
+            "content": "WOOD",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 10,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "PARTS OF AN ELECTRICAL APPLIANCE",
+        "cards": [
+          {
+            "content": "CORD",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 2,
+            "id": null
+          },
+          {
+            "content": "HOUSING",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 11,
+            "id": null
+          },
+          {
+            "content": "PLUG",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 9,
+            "id": null
+          },
+          {
+            "content": "SWITCH",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 4,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "START AND END WITH THE SAME THREE LETTERS",
+        "cards": [
+          {
+            "content": "EINSTEIN",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 5,
+            "id": null
+          },
+          {
+            "content": "GALANGAL",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 13,
+            "id": null
+          },
+          {
+            "content": "HOTSHOT",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 6,
+            "id": null
+          },
+          {
+            "content": "UNDERGROUND",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 0,
+            "id": null
+          }
+        ],
+        "position": null
+      }
+    ]
+  },
+  {
     "date": "2026-11-18",
     "id": 1375,
     "editor": "Wyna Liu",
