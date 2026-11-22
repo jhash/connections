@@ -1,5 +1,148 @@
 [
   {
+    "date": "2026-11-22",
+    "id": 1370,
+    "editor": "Wyna Liu",
+    "categories": [
+      {
+        "title": "MULTITUDE",
+        "cards": [
+          {
+            "content": "HOST",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 13,
+            "id": null
+          },
+          {
+            "content": "MASS",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 15,
+            "id": null
+          },
+          {
+            "content": "SEA",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 5,
+            "id": null
+          },
+          {
+            "content": "SLEW",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 9,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "INTERJECTIONS BEFORE A REACTION",
+        "cards": [
+          {
+            "content": "GEE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 4,
+            "id": null
+          },
+          {
+            "content": "SAY",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 6,
+            "id": null
+          },
+          {
+            "content": "WELL",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 10,
+            "id": null
+          },
+          {
+            "content": "WHY",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 1,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "BUBBLE ___",
+        "cards": [
+          {
+            "content": "BATH",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 12,
+            "id": null
+          },
+          {
+            "content": "GUM",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 11,
+            "id": null
+          },
+          {
+            "content": "TEA",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 2,
+            "id": null
+          },
+          {
+            "content": "WRAP",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 14,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "HOMOPHONES OF PRONOUNS",
+        "cards": [
+          {
+            "content": "EWE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 8,
+            "id": null
+          },
+          {
+            "content": "EYE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 0,
+            "id": null
+          },
+          {
+            "content": "HEE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 3,
+            "id": null
+          },
+          {
+            "content": "WEE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 7,
+            "id": null
+          }
+        ],
+        "position": null
+      }
+    ]
+  },
+  {
     "date": "2026-11-21",
     "id": 1371,
     "editor": "Wyna Liu",
