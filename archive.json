@@ -1,5 +1,148 @@
 [
   {
+    "date": "2026-11-27",
+    "id": 1383,
+    "editor": "Wyna Liu",
+    "categories": [
+      {
+        "title": "TOUCH LIGHTLY",
+        "cards": [
+          {
+            "content": "BRUSH",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 6,
+            "id": null
+          },
+          {
+            "content": "GRAZE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 13,
+            "id": null
+          },
+          {
+            "content": "KISS",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 3,
+            "id": null
+          },
+          {
+            "content": "SKIM",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 8,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "FEMALE ANIMALS",
+        "cards": [
+          {
+            "content": "LEOPARDESS",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 14,
+            "id": null
+          },
+          {
+            "content": "PEAHEN",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 12,
+            "id": null
+          },
+          {
+            "content": "QUEEN",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 1,
+            "id": null
+          },
+          {
+            "content": "VIXEN",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 10,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "ENDING IN PARTS OF THE FOOT",
+        "cards": [
+          {
+            "content": "CAMISOLE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 7,
+            "id": null
+          },
+          {
+            "content": "MISTLETOE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 2,
+            "id": null
+          },
+          {
+            "content": "MONARCH",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 5,
+            "id": null
+          },
+          {
+            "content": "PINWHEEL",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 11,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "ASSOCIATED WITH THE COLOR PURPLE",
+        "cards": [
+          {
+            "content": "ALICE WALKER",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 0,
+            "id": null
+          },
+          {
+            "content": "FLOWERY LANGUAGE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 15,
+            "id": null
+          },
+          {
+            "content": "PRINCE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 4,
+            "id": null
+          },
+          {
+            "content": "ROYALTY",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 9,
+            "id": null
+          }
+        ],
+        "position": null
+      }
+    ]
+  },
+  {
     "date": "2026-11-26",
     "id": 1382,
     "editor": "Wyna Liu",
