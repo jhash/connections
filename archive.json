@@ -1,5 +1,148 @@
 [
   {
+    "date": "2026-11-28",
+    "id": 1379,
+    "editor": "Wyna Liu",
+    "categories": [
+      {
+        "title": "MILD OATHS",
+        "cards": [
+          {
+            "content": "BLAST",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 12,
+            "id": null
+          },
+          {
+            "content": "DARN",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 4,
+            "id": null
+          },
+          {
+            "content": "FUDGE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 1,
+            "id": null
+          },
+          {
+            "content": "NUTS",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 6,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "EDGE",
+        "cards": [
+          {
+            "content": "BORDER",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 11,
+            "id": null
+          },
+          {
+            "content": "HEM",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 3,
+            "id": null
+          },
+          {
+            "content": "RIM",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 14,
+            "id": null
+          },
+          {
+            "content": "SKIRT",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 5,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "SYMBOLS ON A SLOT MACHINE",
+        "cards": [
+          {
+            "content": "BAR",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 7,
+            "id": null
+          },
+          {
+            "content": "BELL",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 9,
+            "id": null
+          },
+          {
+            "content": "CHERRY",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 2,
+            "id": null
+          },
+          {
+            "content": "SEVEN",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 15,
+            "id": null
+          }
+        ],
+        "position": null
+      },
+      {
+        "title": "SOUL ___",
+        "cards": [
+          {
+            "content": "FOOD",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 0,
+            "id": null
+          },
+          {
+            "content": "MATE",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 10,
+            "id": null
+          },
+          {
+            "content": "MUSIC",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 8,
+            "id": null
+          },
+          {
+            "content": "PATCH",
+            "image_url": null,
+            "image_alt_text": null,
+            "position": 13,
+            "id": null
+          }
+        ],
+        "position": null
+      }
+    ]
+  },
+  {
     "date": "2026-11-27",
     "id": 1383,
     "editor": "Wyna Liu",
